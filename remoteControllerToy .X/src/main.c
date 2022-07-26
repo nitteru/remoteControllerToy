@@ -9,10 +9,14 @@
 #include "DeviceConfig.h"
 #include <xc.h>
 #include "main.h"
+#include "pin.h"
 #include "interrupt.h"
 #include "init.h"
 #include "usart.h"
 #include "eeprom.h"
+#include "tmr0.h"
+#include "tmr1.h"
+#include "tmr2.h"
 
 void main(void) {
     
@@ -26,7 +30,9 @@ void main(void) {
     
     while(1)
     {
-        /*
+        CLRWDT();
+#if 0
+/*
          * SLEEPを使う場合
          * 1. 必要なら復帰に使わないペリフェラルのPIEを0にする
          *    (クロックが必要なペリフェラルを除く)
@@ -34,7 +40,6 @@ void main(void) {
          * 3. SLEEPの次がプリフェッチされている｡実行したくない場合はNOPを置く｡
          * 4. WDTを確実にクリアするためにSLEEP直前にCLRWDTを置く
          */
-        CLRWDT();
         SLEEP();
         NOP();
         
@@ -52,6 +57,9 @@ void main(void) {
                 // その他の割り込み要因で復帰
             }
         }
+#endif
+
+        // Todo CCPの設定を追加したい
         
 #ifdef ENABLE_USART
         if(RCSTAbits.OERR)
