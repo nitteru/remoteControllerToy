@@ -55,6 +55,14 @@ void __interrupt() interruptHandler(void)
             TMR1L = RELOAD_TMR1_L;
             T1CONbits.TMR1ON = 1;
         }
+        else if(PIE1bits.TMR2IE == 1 && PIR1bits.TMR2IF == 1)
+        {
+            // TMR2
+            /*
+             * 1周期出力したらRGBの順で電源供給を切り替える
+             * 19.53kHzを3回で154usec(6.51kHz)で1周
+             */
+        }
         else if(PIE2bits.EEIE == 1 && PIR2bits.EEIF == 1)
         {
             // EEPROM Write

@@ -17,6 +17,7 @@
 #include "tmr0.h"
 #include "tmr1.h"
 #include "tmr2.h"
+#include "ccp1.h"
 
 void main(void) {
     

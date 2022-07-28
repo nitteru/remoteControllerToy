@@ -16,9 +16,9 @@ void TMR2Initialize(void) {
     /*
      * Interval (RELOAD_PR2 - RELOAD_TMR2) / (FOSC / 4) * prescaler * postscaler
      * exp.
-     *   256 * 200nsec * 16 * 16 = 13.1072msec
+     *   256 * 200nsec * 1 * 1 = 51.2umsec = 19.53125kHz
      */  
-    T2CON = (uint8_t)(TMR2_TOUTPS_1_16 | TMR2_TMR2ON_OFF | TMR2_T2CKPS_16);
+    T2CON = (uint8_t)(TMR2_TOUTPS_1_1 | TMR2_TMR2ON_OFF | TMR2_T2CKPS_1);
     
     TMR2 = RELOAD_TMR2;
     PR2 = RELOAD_PR2;
