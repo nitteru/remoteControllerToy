@@ -23,6 +23,17 @@ void TMR1Initialize(void) {
     
     TMR1H = RELOAD_TMR1_H;
     TMR1L = RELOAD_TMR1_L;
+    
+    /*
+     * NECフォーマット概要
+     * 変調単位T 562usec
+     * データビット: 0:1T,1T 1:1T,3T
+     * フレーム: リーダー 16T,8T
+     *           カスタマーコード 16bit (8bit + 反転8bitの場合もある)
+     *           データ 8bit + 反転8bit
+     * 固定長フレーム: 32bit
+     * リピート: 16T,4T フレームの後、ボタンを押している間108ms周期で送信
+     */
 }
 
 void TMR1Start(void)

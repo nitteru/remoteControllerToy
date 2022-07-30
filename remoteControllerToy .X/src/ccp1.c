@@ -9,7 +9,7 @@
 #include <xc.h>
 #include "ccp1.h"
 
-void CCP1_Initialize(void) {
+void CCP1Initialize(void) {
 #if CCP1_MODE == 0x00
     
 #elif CCP1_MODE == 0x01
@@ -29,14 +29,14 @@ void CCP1_Initialize(void) {
 }
 
 #if CCP1_MODE == 0x02
-void CCP1_PWM_SetDuty(uint16_t value)
+void CCP1PWMSetDuty(uint16_t value)
 {
     value = value & 0x03FF;
     CCPR1L = (uint8_t)(value >> 8);
     CCPR1H = (uint8_t)(value & 0xFF);
 }
 
-void CCP1_PWM_Start(void)
+void CCP1PWMStart(void)
 {
     CCPR1L = 0x00;
     CCPR1H = 0x00;
@@ -45,7 +45,7 @@ void CCP1_PWM_Start(void)
     T2CONbits.TMR2ON = 1;
 }
 
-void CCP1_PWM_Stop(void)
+void CCP1PWMStop(void)
 {
     CCP1CONbits.CCP1M = 0x00; // Module OFF, 出力状態を維持したい場合は不要?
     CCPR1L = 0x00;
@@ -55,13 +55,13 @@ void CCP1_PWM_Stop(void)
     TMR2 = 0x00;
 }
 
-void CCP1_PWM_Restart(void)
+void CCP1PWMRestart(void)
 {
     T2CONbits.TMR2ON = 1;
     CCP1CONbits.CCP1M = 0x06; // PWM mode
 }
 
-void CCP1_PWM_Pause(void)
+void CCP1PWMPause(void)
 {
     T2CONbits.TMR2ON = 0;
     CCP1CONbits.CCP1M = 0x00; // 出力状態を維持したい場合は不要?

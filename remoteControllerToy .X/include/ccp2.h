@@ -28,26 +28,26 @@
 
 // This is a guard condition so that contents of this file are not included
 // more than once.  
-#ifndef CCP1_H
-#define	CCP1_H
+#ifndef CCP2_H
+#define	CCP2_H
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
-#define CCP1_MODE 0x02 // 0:Capture, 1:Compare, 2:PWM
+#define CCP2_MODE 0x02 // 0:Capture, 1:Compare, 2:PWM
 
-void CCP1Initialize(void);
+void CCP2Initialize(void);
 
-#if CCP1_MODE == 0x00
+#if CCP2_MODE == 0x00
     
-#elif CCP1_MODE == 0x01
+#elif CCP2_MODE == 0x01
     
-#elif CCP1_MODE == 0x02
-void CCP1PWMSetDuty(uint16_t);
-uint16_t CCP1PWMGetDuty(void);
-void CCP1PWMStart(void);
-void CCP1PWMStop(void);
-void CCP1PWMRestart(void);
-void CCP1PWMPause(void);
+#elif CCP2_MODE == 0x02
+void CCP2PWMSetDuty(uint16_t);
+uint16_t CCP2PWMGetDuty(void);
+void CCP2PWMStart(void);
+void CCP2PWMStop(void);
+void CCP2PWMRestart(void);
+void CCP2PWMPause(void);
 #endif
 
 #endif	/* XC_HEADER_TEMPLATE_H */
