@@ -28,17 +28,28 @@
 
 // This is a guard condition so that contents of this file are not included
 // more than once.  
-#ifndef EEPROM_H
-#define	EEPROM_H
+#ifndef CCP1_H
+#define	CCP1_H
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
-void EEPROMInitialize(void);
-void EEPROMWrite(uint8_t, uint8_t);
-uint8_t EEPROMRead(uint8_t);
+#define CCP1_MODE 0x02 // 0:Capture, 1:Compare, 2:PWM
 
-void FlashWrite(uint16_t, uint16_t);
-uint16_t FlashRead(uint16_t);
+void CCP1_Initialize(void);
 
-#endif	/* EEPROM_H */
+
+#if CCP1_MODE == 0x00
+    
+#elif CCP1_MODE == 0x01
+    
+#elif CCP1_MODE == 0x02
+void CCP1_PWM_SetDuty(uint16_t);
+uint16_t CCP1_PWM_GetDuty(void);
+void CCP1_PWM_Start(void);
+void CCP1_PWM_Stop(void);
+void CCP1_PWM_Restart(void);
+void CCP1_PWM_Pause(void);
+#endif
+
+#endif	/* XC_HEADER_TEMPLATE_H */
 

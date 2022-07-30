@@ -138,7 +138,7 @@ extern "C" {
  * Warning: The hex file has the debug bit set.  The debug bit has been cleared during load to memory. 
  * The original hex file has not been modified.
  */
-#pragma config DEBUG = ON
+#pragma config DEBUG = OFF
 
 #ifdef	__cplusplus
 }
