@@ -19,12 +19,22 @@
 #include "tmr2.h"
 #include "ccp1.h"
 
-void main(void) {
-    
+intervalTimerCounters intvTmrCnt;
+intervalTimerFlags intvTmrFlg;
+
+void main(void)
+{
     disableGlobalInterrupt();
     disablePeripheralInterrupt();
     
     systemInitialize();
+
+    // 内部インターバルタイマ
+    intvTmrFlg.A = 0; // フラグ初期化
+    for(uint8_t i = 0; i < 6; i++)
+    {
+        intvTmrCnt.A[i] = 0; // カウンタ初期化
+    }
     
     enableGlobalInterrupt();
     enablePeripheralInterrupt();
@@ -72,7 +82,22 @@ void main(void) {
 #endif
         
         // 本処理
-        
+        // インターバルタイマ処理
+        if(intvTmrFlg.fields.flag100msec)
+        {
+            intvTmrFlg.fields.flag100msec = 0;
+        }
     }
     return;
+}
+
+void calIntervalTimer(void)
+{
+    // 対象単位時間ごとに実行する
+    // 10msec用フラグはTMR0割り込みで立てる
+    if(++intvTmrCnt.fields.counter100msec == INTERVALTIMER_100MSEC)
+    {
+        intvTmrCnt.fields.counter100msec = 0;
+        intvTmrFlg.fields.flag100msec = 1;
+    }
 }
