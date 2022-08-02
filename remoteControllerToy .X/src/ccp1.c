@@ -47,6 +47,8 @@ void CCP1PWMStart(void)
 
 void CCP1PWMStop(void)
 {
+    CCP1CONbits.CCP1X = 0;
+    CCP1CONbits.CCP1Y = 0;
     CCP1CONbits.CCP1M = 0x00; // Module OFF, 出力状態を維持したい場合は不要?
     CCPR1L = 0x00;
     CCPR1H = 0x00;

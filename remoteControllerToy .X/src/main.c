@@ -87,6 +87,27 @@ void main(void)
         {
             intvTmrFlg.fields.flag100msec = 0;
         }
+
+        if(intvTmrFlg.fields.flag200msec)
+        {
+            intvTmrFlg.fields.flag200msec = 0;
+        }
+
+        if(intvTmrFlg.fields.flag500msec)
+        {
+            intvTmrFlg.fields.flag500msec = 0;
+        }
+
+        if(intvTmrFlg.fields.flag1sec)
+        {
+            intvTmrFlg.fields.flag1sec = 0;
+        }
+
+        if(intvTmrFlg.fields.flag2sec)
+        {
+            intvTmrFlg.fields.flag2sec = 0;
+        }
+
     }
     return;
 }
@@ -99,5 +120,29 @@ void calIntervalTimer(void)
     {
         intvTmrCnt.fields.counter100msec = 0;
         intvTmrFlg.fields.flag100msec = 1;
+    }
+
+    if(++intvTmrCnt.fields.counter200msec == INTERVALTIMER_200MSEC)
+    {
+        intvTmrCnt.fields.counter200msec = 0;
+        intvTmrFlg.fields.flag200msec = 1;
+    }
+    
+    if(++intvTmrCnt.fields.counter500msec == INTERVALTIMER_500MSEC)
+    {
+        intvTmrCnt.fields.counter500msec = 0;
+        intvTmrFlg.fields.flag500msec = 1;
+    }
+    
+    if(++intvTmrCnt.fields.counter1sec == INTERVALTIMER_1SEC)
+    {
+        intvTmrCnt.fields.counter1sec = 0;
+        intvTmrFlg.fields.flag1sec = 1;
+    }
+
+    if(++intvTmrCnt.fields.counter2sec == INTERVALTIMER_2SEC)
+    {
+        intvTmrCnt.fields.counter2sec = 0;
+        intvTmrFlg.fields.flag2sec = 1;
     }
 }

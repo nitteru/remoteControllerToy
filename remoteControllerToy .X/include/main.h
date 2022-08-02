@@ -37,8 +37,8 @@
 #define INTERVALTIMER_100MSEC (uint8_t)10
 #define INTERVALTIMER_200MSEC (uint8_t)20
 #define INTERVALTIMER_500MSEC (uint8_t)50
-#define INTERVALTIMER_1MSEC (uint8_t)100
-#define INTERVALTIMER_2MSEC (uint8_t)200
+#define INTERVALTIMER_1SEC (uint8_t)100
+#define INTERVALTIMER_2SEC (uint8_t)200
 
 // インターバルタイマ カウンタ
 typedef union

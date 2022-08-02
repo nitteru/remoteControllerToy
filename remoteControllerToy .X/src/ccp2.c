@@ -12,6 +12,9 @@
 void CCP2Initialize(void)
 {
 #if CCP2_MODE == 0x00
+    CCP2CONbits.CCP2X = 0;
+    CCP2CONbits.CCP2Y = 0;
+    CCP2CONbits.CCP2M = 0x04; // 0x04:Every falling edge, 0x05:Every rising edge, 0x06:Every 4th rising edge, 0x07:Every 16th rising edge
     
 #elif CCP2_MODE == 0x01
     
@@ -22,9 +25,12 @@ void CCP2Initialize(void)
      * 
      * 別途出力先GPIOの出力設定も必要です
      */
-    CCP1CONbits.CCP1M = 0x06; // PWM mode
+    CCP2CONbits.CCP2X = 0;
+    CCP2CONbits.CCP2Y = 0;
+
+    CCP2CONbits.CCP2M = 0x06; // PWM mode
     
-    CCPR1L = 0x00;
-    CCPR1H = 0x00;
+    CCPR2L = 0x00;
+    CCPR2H = 0x00;
 #endif
 }

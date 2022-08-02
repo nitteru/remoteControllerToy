@@ -33,7 +33,7 @@
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
-#define CCP2_MODE 0x02 // 0:Capture, 1:Compare, 2:PWM
+#define CCP2_MODE 0x00 // 0:Capture, 1:Compare, 2:PWM
 
 void CCP2Initialize(void);
 
