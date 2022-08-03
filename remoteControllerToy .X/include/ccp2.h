@@ -35,10 +35,22 @@
 
 #define CCP2_MODE 0x00 // 0:Capture, 1:Compare, 2:PWM
 
+#define CCP2M_DISABLE (uint8_t)0x00
+#define CCP2M_CAPTRE_EVERY_FALLING (uint8_t)0x04
+#define CCP2M_CAPTURE_EVERY_RISING (uint8_t)0x05
+#define CCP2M_CAPTURE_EVERY_4TH_RISING (uint8_t)0x06
+#define CCP2M_CAPTURE_EVERY_16TH_RISING (uint8_t)0x07
+#define CCP2M_COMPARE_SET_OUTPUT_ON_MATCH (uint8_t)0x08
+#define CCP2M_COMPARE_CLEAR_OUTPUT_ON_MATCH (uint8_t)0x09
+#define CCP2M_CPMARE_GEN_SOFT_INTERRUPT_ON_MATCH (uint8_t)0x0A
+#define CCP2M_TRIGGEER_SPECIAL_EVENT (uint8_t)0x0B
+#define CCP2M_PWM (uint8_t)0x0C
+
 void CCP2Initialize(void);
 
 #if CCP2_MODE == 0x00
-    
+void CCP2CaptureStart(void);
+void CCP2CaptureStop(void);
 #elif CCP2_MODE == 0x01
     
 #elif CCP2_MODE == 0x02

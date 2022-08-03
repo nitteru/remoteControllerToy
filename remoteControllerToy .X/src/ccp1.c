@@ -21,7 +21,7 @@ void CCP1Initialize(void) {
      * 
      * 別途出力先GPIOの出力設定も必要です
      */
-    CCP1CONbits.CCP1M = 0x06; // PWM mode
+    CCP1CONbits.CCP1M = CCP1M_PWM; // PWM mode
     
     CCPR1L = 0x00;
     CCPR1H = 0x00;
