@@ -32,8 +32,9 @@ void CCP1Initialize(void) {
 void CCP1PWMSetDuty(uint16_t value)
 {
     value = value & 0x03FF;
-    CCPR1L = (uint8_t)(value >> 8);
-    CCPR1H = (uint8_t)(value & 0xFF);
+    CCP1CONbits.CCP1X = (uint8_t)((value >> 1) & 0x01);
+    CCP1CONbits.CCP1Y = (uint8_t)(value & 0x01);
+    CCPR1L = (uint8_t)(value << 2);
 }
 
 void CCP1PWMStart(void)

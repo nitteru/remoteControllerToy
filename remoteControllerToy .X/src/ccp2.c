@@ -51,14 +51,15 @@ void CCP2CaptureStop(void)
 void CCP2PWMSetDuty(uint16_t value)
 {
     value = value & 0x03FF;
-    CCPR1L = (uint8_t)(value >> 8);
-    CCPR1H = (uint8_t)(value & 0xFF);
+    CCP2CONbits.CCP2X = (uint8_t)((value >> 1) & 0x01);
+    CCP2CONbits.CCP2Y = (uint8_t)(value & 0x01);
+    CCPR2L = (uint8_t)(value >> 8);
 }
 
 void CCP2PWMStart(void)
 {
-    CCPR1L = 0x00;
-    CCPR1H = 0x00;
+    CCPR2L = 0x00;
+    CCPR2H = 0x00;
     
     TMR2 = 0;
     T2CONbits.TMR2ON = 1;
@@ -69,8 +70,7 @@ void CCP2PWMStop(void)
     CCP2CONbits.CCP2X = 0;
     CCP2CONbits.CCP2Y = 0;
     CCP2CONbits.CCP2M = 0x00; // Module OFF, 出力状態を維持したい場合は不要?
-    CCPR1L = 0x00;
-    CCPR1H = 0x00;
+    CCPR2L = 0x00;
     
     T2CONbits.TMR2ON = 0;
     TMR2 = 0x00;
