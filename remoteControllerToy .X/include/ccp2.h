@@ -46,13 +46,15 @@
 #define CCP2M_TRIGGEER_SPECIAL_EVENT (uint8_t)0x0B
 #define CCP2M_PWM (uint8_t)0x0C
 
+#define GetCCP2CaptureValue() (uint16_t)((CCPR2H << 8) | CCPR2L)
+
 void CCP2Initialize(void);
 
 #if CCP2_MODE == 0x00
 void CCP2CaptureStart(void);
 void CCP2CaptureStop(void);
 #elif CCP2_MODE == 0x01
-    
+void CCP2SetCompareValue(uint16_t);
 #elif CCP2_MODE == 0x02
 void CCP2PWMSetDuty(uint16_t);
 uint16_t CCP2PWMGetDuty(void);

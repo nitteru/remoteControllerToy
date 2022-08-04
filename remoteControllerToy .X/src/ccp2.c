@@ -14,6 +14,8 @@ void CCP2Initialize(void)
 #if CCP2_MODE == 0x00
     CCP2CONbits.CCP2X = 0;
     CCP2CONbits.CCP2Y = 0;
+    CCPR2L = 0x00;
+    CCPR2H = 0x00;
     CCP2CONbits.CCP2M = CCP2M_CAPTRE_EVERY_FALLING;
     
 #elif CCP2_MODE == 0x01
@@ -38,16 +40,20 @@ void CCP2Initialize(void)
 #if CCP2_MODE == 0x00
 void CCP2CaptureStart(void)
 {
-    
+    CCP2CONbits.CCP2M = CCP2M_CAPTRE_EVERY_FALLING;
 }
 
 void CCP2CaptureStop(void)
 {
+    CCP2CONbits.CCP2M = CCP2M_DISABLE; // プリスケーラもクリアされます
+}
+#elif CCP2MODE == 0x01
+void CCP2SetCompareValue(uint16_t value)
+{
     
 }
-#endif
 
-#if CCP2_MODE == 0x02
+#elifif CCP2_MODE == 0x02
 void CCP2PWMSetDuty(uint16_t value)
 {
     value = value & 0x03FF;
@@ -58,33 +64,35 @@ void CCP2PWMSetDuty(uint16_t value)
 
 void CCP2PWMStart(void)
 {
-    CCPR2L = 0x00;
-    CCPR2H = 0x00;
-    
+    CCP2CONbits.CCP2X = 0x01;
+    CCP2CONbits.CCP2Y = 0x01;
+    CCPR2L = 0xFF;
     TMR2 = 0;
+    
     T2CONbits.TMR2ON = 1;
 }
 
 void CCP2PWMStop(void)
 {
-    CCP2CONbits.CCP2X = 0;
-    CCP2CONbits.CCP2Y = 0;
-    CCP2CONbits.CCP2M = 0x00; // Module OFF, 出力状態を維持したい場合は不要?
-    CCPR2L = 0x00;
-    
     T2CONbits.TMR2ON = 0;
+
+    CCP2CONbits.CCP2X = 0x01;
+    CCP2CONbits.CCP2Y = 0x01;
+    //CCP2CONbits.CCP2M = CCP2M_DISABLE; // Module OFF, 出力状態を維持したい場合は不要?
+    CCPR2L = 0xFF;
+    
     TMR2 = 0x00;
 }
 
 void CCP2PWMRestart(void)
 {
+    CCP2CONbits.CCP2M = CCP2M_PWM; // PWM mode
     T2CONbits.TMR2ON = 1;
-    CCP2CONbits.CCP2M = 0x06; // PWM mode
 }
 
 void CCP2PWMPause(void)
 {
     T2CONbits.TMR2ON = 0;
-    CCP2CONbits.CCP2M = 0x00; // 出力状態を維持したい場合は不要?
+    //CCP2CONbits.CCP2M = CCP2M_DISABLE; // 出力状態を維持したい場合は不要?
 }
 #endif
