@@ -40,6 +40,56 @@
 #define INTERVALTIMER_1SEC (uint8_t)100
 #define INTERVALTIMER_2SEC (uint8_t)200
 
+/*
+ * NECフォーマット解析用
+ * 変調
+ *   950nm, サブキャリア 38kHz typ 1/3duty
+ * Frame
+ *   Leader, Customer Code (8bit), Customer Code INV (8bit), Data (8bit), Data INV (8bit), Stop bit (1T)
+ * Repeat
+ *   16T On, 4T Off, Stop bit (1T)
+ * Transmission
+ *   FrameとRepeat間は108msec
+ */
+#if 0
+#define NEC_MODULATE_UNIT_T 562 // 変調単位(usec) → タイマー分解能で割る, 下のTもタイマー分解能*値にする
+#define NEC_FRAME_LEADER_ON 16T 
+#define NEC_FRAME_LEADER_OFF 8T 
+#define NEC_FRAME_LEADER_TOTAL 24T // 最長パルス幅 13.488msec
+#define NEC_DATA_ZERO_ON 1T
+#define NEC_DATA_ZERO_OFF 1T
+#define NEC_DATA_ZERO_TOTAL 2T
+#define NEC_DATA_ONE_ON 1T
+#define NEC_DATA_ONE_OFF 3T
+#define NEC_DATA_ONE_TOTAL 4T
+#endif
+
+/*
+ * 家製協(AEHA)フォーマット解析用
+ * 変調
+ *   950nm, サブキャリア 38kHz typ 1/3duty 
+ * Frame
+ *   Leader, Customer Code (16bit), パリティ カスタマーコードを4bitずつXOR (4bit), Data0 (8bit), Data N (8bit), Stop bit (1T), Trailer
+ *   N: 6 (48bit) typ
+ *   Trailer 8msec以上の無送信区間?
+ * Repeat
+ *   8T On, 8T Off, Stop bit (1T)
+ * Transmission
+ *   FrameとRepeat間は130msec typ
+ */
+#if 0
+#define NEC_MODULATE_UNIT_T 425 // 変調単位 typ(usec) 350～500usec → タイマー分解能で割る, 下のTもタイマー分解能*値にする
+#define NEC_FRAME_LEADER_ON 8T
+#define NEC_FRAME_LEADER_OFF 4T 
+#define NEC_FRAME_LEADER_TOTAL 12T // 最長パルス幅 5.1msec
+#define NEC_DATA_ZERO_ON 1T
+#define NEC_DATA_ZERO_OFF 1T
+#define NEC_DATA_ZERO_TOTAL 2T
+#define NEC_DATA_ONE_ON 1T
+#define NEC_DATA_ONE_OFF 3T
+#define NEC_DATA_ONE_TOTAL 4T
+#endif
+
 // インターバルタイマ カウンタ
 typedef union
 {

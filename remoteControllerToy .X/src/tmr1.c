@@ -17,6 +17,7 @@ void TMR1Initialize(void) {
      * Interval (65535 - ((RELOAD_TMR1_H << 8) | RELOAD_TMR1_L)) / (FOSC / 4) * prescaler
      * exp.
      *   65535 * 200nsec * 8 = 104.856msec
+     *   Fosc / 4 = 200nsec @ 20MHz
      */    
     T1CON = 0x00;
     T1CON = (TMR1_T1CKPS_1_8 | TMR1_TMR1ON_OFF | TMR1_TMR1CS_FOSC4 | TMR1_T1SYNC_ENABLE | TMR1_T1OSCEN_DISABLE );

@@ -54,6 +54,10 @@ void __interrupt() interruptHandler(void)
             TMR1H = RELOAD_TMR1_H;
             TMR1L = RELOAD_TMR1_L;
             T1CONbits.TMR1ON = 1;
+            
+            /*
+             * オーバーフローフラグまたはカウンタを作ること(Capture時)
+             */
         }
         else if(PIE1bits.TMR2IE == 1 && PIR1bits.TMR2IF == 1)
         {
