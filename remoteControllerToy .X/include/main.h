@@ -50,6 +50,8 @@
  *   16T On, 4T Off, Stop bit (1T)
  * Transmission
  *   FrameとRepeat間は108msec
+ * 
+ * 変調単位の±30%を読み取る 0.392～0.728msec (±168usec) → TMR1分解能 2usec前後?, 16bitタイマーで125msec前後まで測定可能
  */
 #if 0
 #define NEC_MODULATE_UNIT_T 562 // 変調単位(usec) → タイマー分解能で割る, 下のTもタイマー分解能*値にする
@@ -76,6 +78,8 @@
  *   8T On, 8T Off, Stop bit (1T)
  * Transmission
  *   FrameとRepeat間は130msec typ
+ * 
+ * 0.425msec±18%(±75usec)を範囲とする?
  */
 #if 0
 #define NEC_MODULATE_UNIT_T 425 // 変調単位 typ(usec) 350～500usec → タイマー分解能で割る, 下のTもタイマー分解能*値にする
