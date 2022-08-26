@@ -33,7 +33,11 @@
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
-#define CCP2_MODE 0x00 // 0:Capture, 1:Compare, 2:PWM
+#define CCP2_MODE_CAPTURE (uint8_t)0x00
+#define CCP2_MODE_COMPARE (uint8_t)0x01
+#define CCP2_MODE_PWM (uint8_t)0x02
+#define CCP2_MODE CCP2_MODE_CAPTURE // 0:Capture, 1:Compare, 2:PWM
+
 
 #define CCP2M_DISABLE (uint8_t)0x00
 #define CCP2M_CAPTRE_EVERY_FALLING (uint8_t)0x04
@@ -48,14 +52,21 @@
 
 #define GetCCP2CaptureValue() (uint16_t)((CCPR2H << 8) | CCPR2L)
 
+enum ccp2Mode
+{
+    CCP2_MODE_CAPTURE = 0, // Capture
+    CCP2_MODE_COMPARE, // Compare
+    CCP2_MODE_PWM // PWM
+};
+
 void CCP2Initialize(void);
 
-#if CCP2_MODE == 0x00
+#if CCP2_MODE == 0x00 // Capture
 void CCP2CaptureStart(void);
 void CCP2CaptureStop(void);
-#elif CCP2_MODE == 0x01
+#elif CCP2_MODE == 0x01 // Compare
 void CCP2SetCompareValue(uint16_t);
-#elif CCP2_MODE == 0x02
+#elif CCP2_MODE == 0x02 // PWM
 void CCP2PWMSetDuty(uint16_t);
 uint16_t CCP2PWMGetDuty(void);
 void CCP2PWMStart(void);

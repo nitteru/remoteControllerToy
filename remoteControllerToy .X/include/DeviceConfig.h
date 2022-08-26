@@ -33,44 +33,7 @@
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
-// TODO Insert appropriate #include <>
-
-// TODO Insert C++ class definitions if appropriate
-
-// TODO Insert declarations
-
-// Comment a function and leverage automatic documentation with slash star star
-/**
-    <p><b>Function prototype:</b></p>
-  
-    <p><b>Summary:</b></p>
-
-    <p><b>Description:</b></p>
-
-    <p><b>Precondition:</b></p>
-
-    <p><b>Parameters:</b></p>
-
-    <p><b>Returns:</b></p>
-
-    <p><b>Example:</b></p>
-    <code>
- 
-    </code>
-
-    <p><b>Remarks:</b></p>
- */
-// TODO Insert declarations or function prototypes (right here) to leverage 
-// live documentation
-
-#ifdef	__cplusplus
-extern "C" {
-#endif /* __cplusplus */
-
-    // TODO If C++ is being used, regular C code needs function names to have C 
-    // linkage so the functions can be used by the c code. 
-
-#define _XTAL_FREQ 20000000
+#define _XTAL_FREQ 16000000 // __delay_us(), __delay_ms()用
 
 /*
  * {Install Drive}:/Program Files/Microchip/xc8/vx.xx/docs/chips/16f877.html
@@ -139,10 +102,6 @@ extern "C" {
  * The original hex file has not been modified.
  */
 #pragma config DEBUG = OFF
-
-#ifdef	__cplusplus
-}
-#endif /* __cplusplus */
 
 #endif	/* DEVICE_CONFIG_H */
 

@@ -37,7 +37,7 @@ void CCP2Initialize(void)
 #endif
 }
 
-#if CCP2_MODE == 0x00
+#if CCP2_MODE == CCP2_MODE_CAPTURE
 void CCP2CaptureStart(void)
 {
     CCP2CONbits.CCP2M = CCP2M_CAPTRE_EVERY_FALLING;
@@ -47,13 +47,13 @@ void CCP2CaptureStop(void)
 {
     CCP2CONbits.CCP2M = CCP2M_DISABLE; // プリスケーラもクリアされます
 }
-#elif CCP2MODE == 0x01
+#elif CCP2MODE == CCP2_MODE_COMPARE
 void CCP2SetCompareValue(uint16_t value)
 {
     
 }
 
-#elifif CCP2_MODE == 0x02
+#elif CCP2_MODE == CCP2_MODE_PWM
 void CCP2PWMSetDuty(uint16_t value)
 {
     value = value & 0x03FF;
