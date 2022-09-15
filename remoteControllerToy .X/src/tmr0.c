@@ -22,9 +22,9 @@ void TMR0Initialize(void) {
     OPTION_REG = ret;
     
     /*
-     * Interval (256 - RELOAD_TMR0) * (FOSC / 4) * prescaler sec
-     * exp. 20MHz, プリスケーラ 1:256, REALOD_TMR0 0x00
-     *   256 * 200nsec * 256 = 13.1072msec
+     * Interval (256 - RELOAD_TMR0) * (FOSC / 4)^-1 * prescaler sec
+     * exp. 16MHz, プリスケーラ 1:256, REALOD_TMR0 0x00
+     *   256 * 200nsec * 256 = 16.384msec
      */
     TMR0 = RELOAD_TMR0;    
 }

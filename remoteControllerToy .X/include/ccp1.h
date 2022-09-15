@@ -46,7 +46,7 @@
 #define CCP1M_TRIGGEER_SPECIAL_EVENT (uint8_t)0x0B
 #define CCP1M_PWM (uint8_t)0x0C
 
-#define GetCCP1CaptureValue() (uint16_t)((CCPR1H << 8) | CCPR1L)
+#define GetCCP1CaptureValue() ((uint16_t)(CCPR1H << 8) | (uint16_t)CCPR1L)
 
 void CCP1Initialize(void);
 

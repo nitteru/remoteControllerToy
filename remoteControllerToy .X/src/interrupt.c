@@ -8,6 +8,7 @@
 
 #include <xc.h>
 #include "interrupt.h"
+#include "main.h"
 #include "tmr0.h"
 #include "tmr1.h"
 
@@ -19,6 +20,7 @@ void __interrupt() interruptHandler(void)
         // TMR0
         INTCONbits.TMR0IF = 0;
         TMR0 = RELOAD_TMR0;
+        intvTmrFlg.fields.flag10msec = 1;
     }
     else if(INTCONbits.INTE == 1 && INTCONbits.INTF == 1)
     {
@@ -55,9 +57,8 @@ void __interrupt() interruptHandler(void)
             TMR1L = RELOAD_TMR1_L;
             T1CONbits.TMR1ON = 1;
             
-            /*
-             * オーバーフローフラグまたはカウンタを作ること(Capture時)
-             */
+             // オーバーフローフラグ
+            captureTimerOverflow = 1;
         }
         else if(PIE1bits.TMR2IE == 1 && PIR1bits.TMR2IF == 1)
         {
@@ -71,6 +72,14 @@ void __interrupt() interruptHandler(void)
         {
             // EEPROM Write
             PIR2bits.EEIF = 0;
+        }
+        else if(PIE2bits.CCP2IE == 1 && PIR2bits.CCP2IF == 1)
+        {
+            // CCP2
+            PIR2bits.CCP2IF = 0;
+            // キャプチャしたタイマーの値を取得
+            edgeCaptureValue = (uint16_t)(CCPR2H << 8) | (uint16_t)CCPR2L;
+            isCaptured = 1;
         }
     }
 }

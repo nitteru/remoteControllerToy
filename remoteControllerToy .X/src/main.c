@@ -22,6 +22,14 @@
 intervalTimerCounters intvTmrCnt;
 intervalTimerFlags intvTmrFlg;
 
+enum nodeFrame nFrame = NODE_WAIT;
+
+uint16_t edgeCaptureValue = 0; // キャプチャした値
+uint8_t captureTimerOverflow = 0; // キャプチャタイマーOF回数
+uint8_t isCaptured = 0; // キャプチャ完了フラグ
+
+uint8_t dataFrameBuffer[32]; // データ格納用 AEHAを踏まえて最大32バイトとする 
+
 void main(void)
 {
     disableGlobalInterrupt();
@@ -83,6 +91,12 @@ void main(void)
         
         // 本処理
         // インターバルタイマ処理
+        if(intvTmrFlg.fields.flag10msec)
+        {
+            intvTmrFlg.fields.flag10msec = 0;
+            calIntervalTimer();
+        }
+
         if(intvTmrFlg.fields.flag100msec)
         {
             intvTmrFlg.fields.flag100msec = 0;
@@ -108,6 +122,22 @@ void main(void)
             intvTmrFlg.fields.flag2sec = 0;
         }
 
+        if(isCaptured)
+        {
+            // CCP Captureでパルス幅を検出した
+            isCaptured = 0;
+            
+            if(captureTimerOverflow)
+            {
+                // 測定可能範囲を超えている
+                captureTimerOverflow = 0;
+            }
+            else
+            {
+                // パルスを検出した
+                
+            }
+        }
     }
     return;
 }

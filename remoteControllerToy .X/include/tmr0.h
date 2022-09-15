@@ -46,7 +46,7 @@
 #define TMR0_PS_1_128 (uint8_t)0x06
 #define TMR0_PS_1_256 (uint8_t)0x07
 
-#define RELOAD_TMR0 (uint8_t)0x00
+#define RELOAD_TMR0 (uint8_t)100 // 9.984msec
 
 void TMR0Initialize(void);
 

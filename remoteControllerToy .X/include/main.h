@@ -47,6 +47,7 @@
  * 16bitタイマー TMR1を使用
  * 各フィールド､ビットのtyp幅と誤差範囲を2次元配列に入れて判定
  * → フィールド固定のNECフォーマットには使えそう｡AEHAは可変長フレームなので最後の見つけ方を工夫する?
+ * LSBから送信される
  */
 
 /*
@@ -138,6 +139,27 @@ typedef union
         // MSB
     } fields;
 } intervalTimerFlags;
+
+enum nodeFrame
+{
+    NODE_WAIT, // 受信待機
+    // 以下､リーダーを見てフォーマットを判断
+    NODE_NEC_CUSTOMERCODE_L, // カスタマーコード下位 (NEC)
+    NODE_NEC_CUSTOMERCODE_H, // カスタマーコード上位 (NEC)
+    NODE_NEC_DATA, // データ (NEC)
+    NODE_NEC_nDATA, // 反転データ (NEC)
+    NODE_NEC_REPEAT, // リピートコード (NEC)
+    NODE_AEHA_CUSTOMERCODE_L, // カスタマーコード下位 (AEHA)
+    NODE_AEHA_CUSTOMERCODE_H, // カスタマーコード上位 (AEHA)
+    NODE_AEHA_PARITY_SYSTEM, // パリティ4ビット+システムコード4ビット (AEHA)
+    NODE_AEHA_DATA_N // データ 送信バイト数は任意
+    // AEHAはトレーラ(1T, 8ms以上の空白)をもって終端とする
+};
+
+extern intervalTimerFlags intvTmrFlg; // インターバルタイマフラグ
+extern uint16_t edgeCaptureValue; // キャプチャした値
+extern uint8_t isCaptured;
+extern uint8_t captureTimerOverflow; // キャプチャタイマーOFフラグ
 
 void calIntervalTimer(void);
 
