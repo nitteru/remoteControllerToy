@@ -28,8 +28,7 @@
 
 // This is a guard condition so that contents of this file are not included
 // more than once.  
-#ifndef EEPROM_H
-#define	EEPROM_H
+#pragma once
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
@@ -39,6 +38,3 @@ uint8_t EEPROMRead(uint8_t);
 
 void FlashWrite(uint16_t, uint16_t);
 uint16_t FlashRead(uint16_t);
-
-#endif	/* EEPROM_H */
-

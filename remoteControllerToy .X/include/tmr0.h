@@ -28,8 +28,7 @@
 
 // This is a guard condition so that contents of this file are not included
 // more than once.  
-#ifndef TMR0_H
-#define	TMR0_H
+#pragma once
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
@@ -49,6 +48,3 @@
 #define RELOAD_TMR0 (uint8_t)100 // 9.984msec
 
 void TMR0Initialize(void);
-
-#endif	/* TMR0_H */
-

@@ -28,8 +28,7 @@
 
 // This is a guard condition so that contents of this file are not included
 // more than once.  
-#ifndef USART_H
-#define	USART_H
+#pragma once
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
@@ -75,5 +74,3 @@
 #define SPBRG_VALUE 0x81
 
 void USARTInitialize(void);
-
-#endif	/* USART_H */

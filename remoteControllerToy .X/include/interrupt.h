@@ -28,8 +28,7 @@
 
 // This is a guard condition so that contents of this file are not included
 // more than once.  
-#ifndef INTERRUPT_H
-#define	INTERRUPT_H
+#pragma once
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
@@ -37,6 +36,3 @@
 #define disableGlobalInterrupt() (INTCONbits.GIE = 0)
 #define enablePeripheralInterrupt() (INTCONbits.PEIE = 1)
 #define disablePeripheralInterrupt() (INTCONbits.PEIE = 0)
-
-#endif	/* INTERRUPT_H */
-

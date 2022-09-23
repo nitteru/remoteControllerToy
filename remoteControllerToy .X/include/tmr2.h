@@ -28,8 +28,7 @@
 
 // This is a guard condition so that contents of this file are not included
 // more than once.  
-#ifndef TMR2_H
-#define	TMR2_H
+#pragma once
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
@@ -62,6 +61,4 @@
 void TMR2Initialize(void);
 void TMR2Start(void);
 void TMR2Stop(void);
-
-#endif	/* TMR2_H */
 

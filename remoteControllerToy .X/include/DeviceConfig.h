@@ -28,8 +28,7 @@
 
 // This is a guard condition so that contents of this file are not included
 // more than once.  
-#ifndef DEVICE_CONFIG_H
-#define	DEVICE_CONFIG_H
+#pragma once
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
@@ -102,6 +101,3 @@
  * The original hex file has not been modified.
  */
 #pragma config DEBUG = OFF
-
-#endif	/* DEVICE_CONFIG_H */
-

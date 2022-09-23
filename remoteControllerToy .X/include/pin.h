@@ -28,8 +28,7 @@
 
 // This is a guard condition so that contents of this file are not included
 // more than once.  
-#ifndef PIN_H
-#define	PIN_H
+#pragma once
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
@@ -37,7 +36,3 @@
 #define INPUT_RA0 PORTAbits.RA0
 
 void PinInitialize(void);
-
-
-#endif	/* PIN_H */
-

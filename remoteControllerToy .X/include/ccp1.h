@@ -28,8 +28,7 @@
 
 // This is a guard condition so that contents of this file are not included
 // more than once.  
-#ifndef CCP1_H
-#define	CCP1_H
+#pragma once
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
@@ -62,6 +61,3 @@ void CCP1PWMStop(void);
 void CCP1PWMRestart(void);
 void CCP1PWMPause(void);
 #endif
-
-#endif	/* XC_HEADER_TEMPLATE_H */
-
