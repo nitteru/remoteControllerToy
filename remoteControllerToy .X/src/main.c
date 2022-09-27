@@ -40,6 +40,9 @@ uint8_t dataFrameBuffer[32]; // データ格納用 AEHAを踏まえて最大32�
  * [5][*]: AEHフォーマット 1 4T
  * [6][*]: NECフォーマットリピート 20T
  * [7][*]: AEHAフォーマットリピート 16T
+ * 
+ * TMR1の分解能: 250nsec * 8 = 2usec
+ * 各区間を2usecで割った値で定義していく
  */
 const uint8_t tbl[8][2] = {
     {0,0},
