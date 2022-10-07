@@ -39,6 +39,9 @@ uint8_t rcvTimeOutEnable = 0; // 受信タイムアウト管理
 uint8_t rcvTimeOutFlag = 0; // 受信タイムアウトフラグ
 uint8_t rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC; // 受信タイムアウトカウンタ * 10msec
 
+uint8_t aehaTrailerEnable = 0; // AEHAトレーラー受信管理
+uint8_t aehaTrailerFlag = 0; // AEHAトレーラー受信フラグ
+uint8_t aehaTrailerCounter = AEHA_TRAILER_TIME; // AEHAトレーラー用カウンタ
 /*
  * High→Lowで区切られる区間の既定値(タイマーカウント値)､誤差範囲(概ね±30%)のセット
  * [0][*]: NECフォーマットリーダー 24T
@@ -140,6 +143,21 @@ void main(void)
                     rcvTimeOutEnable = 0;
                     //rcvTimeOutFlag = 1;
                     nFrame = NODE_TIMEOUT;
+                }
+            }
+            
+            if(aehaTrailerEnable)
+            {
+                /*
+                 * AEHAトレーラーの確認
+                 * AEHAフォーマットの場合､1ビット受信して8msec以上経過したらトレーラーとする
+                 */
+                if(aehaTrailerCounter-- == 0)
+                {
+                    aehaTrailerCounter = AEHA_TRAILER_TIME;
+                    aehaTrailerEnable = 0;
+                    aehaTrailerFlag = 1;
+                    nFrame = NODE_RECEIVE_COMPLETE;
                 }
             }
         }
@@ -392,6 +410,7 @@ void main(void)
                                 nFrame = NODE_RECEIVE_COMPLETE; // AEHAの場合は受信完了扱い
                             }
 
+                            aehaTrailerEnable = 1; // 最後のバイトか確認する → トレーラーを探す
                             nFrame = NODE_AEHA_DATA_N;
                         }                        
                         break;

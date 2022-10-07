@@ -42,6 +42,7 @@
 #define DATA_BUFFER_SIZE (uint8_t)32 // 受信データバッファサイズ
 
 #define RECEIVE_TIMEOUT_10MSEC (uint8_t)15 // 受信タイムアウト時間 * 10msec
+#define AEHA_TRAILER_TIME (uint8_t)1 // AEHAフォーマット トレイラー時間(8msec以上) * 10msec
 
 /*
  * 受信解析全般
