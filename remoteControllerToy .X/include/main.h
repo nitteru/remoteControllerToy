@@ -39,6 +39,10 @@
 #define INTERVALTIMER_1SEC (uint8_t)100
 #define INTERVALTIMER_2SEC (uint8_t)200
 
+#define DATA_BUFFER_SIZE (uint8_t)32 // 受信データバッファサイズ
+
+#define RECEIVE_TIMEOUT_10MSEC (uint8_t)15 // 受信タイムアウト時間 * 10msec
+
 /*
  * 受信解析全般
  * 
@@ -151,8 +155,18 @@ enum nodeFrame
     NODE_AEHA_CUSTOMERCODE_L, // カスタマーコード下位 (AEHA)
     NODE_AEHA_CUSTOMERCODE_H, // カスタマーコード上位 (AEHA)
     NODE_AEHA_PARITY_SYSTEM, // パリティ4ビット+システムコード4ビット (AEHA)
-    NODE_AEHA_DATA_N // データ 送信バイト数は任意
-    // AEHAはトレーラ(1T, 8ms以上の空白)をもって終端とする
+    NODE_AEHA_DATA_N, // データ 送信バイト数は任意
+    NODE_TIMEOUT, // 受信タイムアウト
+    NODE_RECEIVE_COMPLETE // 受信完了
+            // AEHAはトレーラ(1T, 8ms以上の空白)をもって終端とする
+            // NECは規定バイト数受信したら完了とする
+};
+
+// 受信したデータ
+enum receiveData
+{
+    NEC_LEADER, // NECフォーマットリーダー
+    AEHA_LEADER, // AEHAフォーマットリーダー
 };
 
 extern intervalTimerFlags intvTmrFlg; // インターバルタイマフラグ

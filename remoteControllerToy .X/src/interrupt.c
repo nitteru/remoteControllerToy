@@ -77,9 +77,15 @@ void __interrupt() interruptHandler(void)
         {
             // CCP2
             PIR2bits.CCP2IF = 0;
+            
             // キャプチャしたタイマーの値を取得
             edgeCaptureValue = (uint16_t)(CCPR2H << 8) | (uint16_t)CCPR2L;
             isCaptured = 1;
+            
+            T1CONbits.TMR1ON = 0;
+            TMR1H = RELOAD_TMR1_H;
+            TMR1L = RELOAD_TMR1_L;
+            T1CONbits.TMR1ON = 1;  
         }
     }
 }

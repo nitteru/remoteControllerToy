@@ -12,6 +12,12 @@
 void CCP2Initialize(void)
 {
 #if CCP2_MODE == 0x00
+    /*
+     * Captureモード時はTMR1を使います
+     * TMR1の設定は別途行ってください
+     * 
+     * 別途出力先GPIOの出力設定も必要です
+     */
     CCP2CONbits.CCP2X = 0;
     CCP2CONbits.CCP2Y = 0;
     CCPR2L = 0x00;
@@ -22,8 +28,8 @@ void CCP2Initialize(void)
     
 #elif CCP2_MODE == 0x02
     /*
-     * PWMモード時はTMR1を使います
-     * TMR1の設定は別途行ってください
+     * PWMモード時はTMR2を使います
+     * TMR2の設定は別途行ってください
      * 
      * 別途出力先GPIOの出力設定も必要です
      */
