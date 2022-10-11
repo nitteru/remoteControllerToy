@@ -67,28 +67,25 @@ const uint16_t tbl[8][2] = {
     {3400, 1020}
 };
 
-void main(void)
-{
+void main(void) {
     disableGlobalInterrupt();
     disablePeripheralInterrupt();
-    
+
     systemInitialize();
 
     // 内部インターバルタイマ
     intvTmrFlg.A = 0; // フラグ初期化
-    for(uint8_t i = 0; i < 6; i++)
-    {
+    for (uint8_t i = 0; i < 6; i++) {
         intvTmrCnt.A[i] = 0; // カウンタ初期化
     }
-    
+
     enableGlobalInterrupt();
     enablePeripheralInterrupt();
-    
-    while(1)
-    {
+
+    while (1) {
         CLRWDT();
 #if 0
-/*
+        /*
          * SLEEPを使う場合
          * 1. 必要なら復帰に使わないペリフェラルのPIEを0にする
          *    (クロックが必要なペリフェラルを除く)
@@ -98,46 +95,38 @@ void main(void)
          */
         SLEEP();
         NOP();
-        
-        if(STATUSbits.nPD == 0)
-        {
+
+        if (STATUSbits.nPD == 0) {
             // nPD: 電源ONまたはSLEEPの実行で0
-            
-            if(STATUSbits.nTO == 0)
-            {
+
+            if (STATUSbits.nTO == 0) {
                 // nTO: WDTタイムアウト発生で0 → WDTタイムアウトで復帰
                 // 例えばカウンタを用意して一定期間後に処理をする､など
-            }
-            else
-            {
+            } else {
                 // その他の割り込み要因で復帰
             }
         }
 #endif
 
         // Todo CCPの設定を追加したい
-        
+
 #ifdef ENABLE_USART
-        if(RCSTAbits.OERR)
-        {
+        if (RCSTAbits.OERR) {
             // オーバーランエラー
             RCSTAbits.CREN = 0;
             RCSTAbits.CREN = 1;
         }
 #endif
-        
+
         // 本処理
         // インターバルタイマ処理
-        if(intvTmrFlg.fields.flag10msec)
-        {
+        if (intvTmrFlg.fields.flag10msec) {
             intvTmrFlg.fields.flag10msec = 0;
             calIntervalTimer();
-            
+
             // 受信タイムアウトカウント
-            if(rcvTimeOutEnable)
-            {
-                if(rcvTimeOutCounter-- == 0)
-                {
+            if (rcvTimeOutEnable) {
+                if (rcvTimeOutCounter-- == 0) {
                     // タイムアウト
                     rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
                     rcvTimeOutEnable = 0;
@@ -145,15 +134,13 @@ void main(void)
                     nFrame = NODE_TIMEOUT;
                 }
             }
-            
-            if(aehaTrailerEnable)
-            {
+
+            if (aehaTrailerEnable) {
                 /*
                  * AEHAトレーラーの確認
                  * AEHAフォーマットの場合､1ビット受信して8msec以上経過したらトレーラーとする
                  */
-                if(aehaTrailerCounter-- == 0)
-                {
+                if (aehaTrailerCounter-- == 0) {
                     aehaTrailerCounter = AEHA_TRAILER_TIME;
                     aehaTrailerEnable = 0;
                     aehaTrailerFlag = 1;
@@ -162,33 +149,27 @@ void main(void)
             }
         }
 
-        if(intvTmrFlg.fields.flag100msec)
-        {
+        if (intvTmrFlg.fields.flag100msec) {
             intvTmrFlg.fields.flag100msec = 0;
         }
 
-        if(intvTmrFlg.fields.flag200msec)
-        {
+        if (intvTmrFlg.fields.flag200msec) {
             intvTmrFlg.fields.flag200msec = 0;
         }
 
-        if(intvTmrFlg.fields.flag500msec)
-        {
+        if (intvTmrFlg.fields.flag500msec) {
             intvTmrFlg.fields.flag500msec = 0;
         }
 
-        if(intvTmrFlg.fields.flag1sec)
-        {
+        if (intvTmrFlg.fields.flag1sec) {
             intvTmrFlg.fields.flag1sec = 0;
         }
 
-        if(intvTmrFlg.fields.flag2sec)
-        {
+        if (intvTmrFlg.fields.flag2sec) {
             intvTmrFlg.fields.flag2sec = 0;
         }
 
-        if(isCaptured)
-        {
+        if (isCaptured) {
             // CCP Captureでパルス幅を検出した
             isCaptured = 0;
 
@@ -201,265 +182,239 @@ void main(void)
              * 各部位のLowパルス幅(赤外線出力期間)の既定値､誤差範囲を持つ
              * 
              */
-            if(captureTimerOverflow)
-            {
+            if (captureTimerOverflow) {
                 nFrame = NODE_WAIT;
-            }
-            else
-            {
+            } else {
                 // どの区間に該当するか
-                if(((tbl[0][0] - tbl[0][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[0][0] + tbl[0][1])))
-                {
+                if (((tbl[0][0] - tbl[0][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[0][0] + tbl[0][1]))) {
                     // NECフォーマットのリーダー
                     rcvTimeOutEnable = 1;
                     rcvTimeOutFlag = 0;
                     rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
-                    
+
                     repeatFlag = 0;
                     rcvByteBuffer = 0;
                     rcvShiftCounter = 0;
                     rcvByteFlag = 0;
                     dataFrameCounter = 0;
-                    
-                    for(uint8_t i = 0; i < DATA_BUFFER_SIZE; i++)
-                    {
+
+                    for (uint8_t i = 0; i < DATA_BUFFER_SIZE; i++) {
                         dataFrameBuffer[i] = 0x00;
                     }
-                    
+
                     nFrame = NODE_NEC_CUSTOMERCODE_L;
-                }
-                else if(((tbl[1][0] - tbl[1][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[1][0] + tbl[1][1])))
-                {
+                } else if (((tbl[1][0] - tbl[1][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[1][0] + tbl[1][1]))) {
                     // AEHAフォーマットのリーダー
                     rcvTimeOutEnable = 1;
                     rcvTimeOutFlag = 0;
                     rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
-                    
+
                     repeatFlag = 0;
                     rcvByteBuffer = 0;
                     rcvShiftCounter = 0;
                     rcvByteFlag = 0;
                     dataFrameCounter = 0;
-                    
-                    for(uint8_t i = 0; i < DATA_BUFFER_SIZE; i++)
-                    {
+
+                    for (uint8_t i = 0; i < DATA_BUFFER_SIZE; i++) {
                         dataFrameBuffer[i] = 0x00;
                     }
-                    
+
                     nFrame = NODE_AEHA_CUSTOMERCODE_L;
-                }
-                else if(((tbl[2][0] - tbl[2][1]) < edgeCaptureValue) &&  (edgeCaptureValue < (tbl[2][0] + tbl[2][1])))
-                {
+                } else if (((tbl[2][0] - tbl[2][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[2][0] + tbl[2][1]))) {
                     // NEC,AEHAフォーマットの0
                     rcvByteBuffer = (rcvByteBuffer >> rcvShiftCounter);
-                    if(++rcvShiftCounter == 8)
-                    {
+                    if (++rcvShiftCounter == 8) {
                         // 1Byte受信
                         rcvByteFlag = 1;
                     }
-                }
-                else if(((tbl[3][0] - tbl[3][1]) < edgeCaptureValue) &&  (edgeCaptureValue < (tbl[3][0] + tbl[3][1])))
-                {
+                } else if (((tbl[3][0] - tbl[3][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[3][0] + tbl[3][1]))) {
                     // NEC,AEHAフォーマットの1
                     rcvByteBuffer = (rcvByteBuffer >> rcvShiftCounter) & 0x80;
-                    if(++rcvShiftCounter == 8)
-                    {
+                    if (++rcvShiftCounter == 8) {
                         // 1Byte受信
                         rcvByteFlag = 1;
-                    }                    
-                }
-                else if(((tbl[5][0] - tbl[5][1]) < edgeCaptureValue) &&  (edgeCaptureValue < (tbl[5][0] + tbl[5][1])))
-                {
+                    }
+                } else if (((tbl[5][0] - tbl[5][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[5][0] + tbl[5][1]))) {
                     // NECフォーマットのリピート
                     repeatFlag = 1;
-                }
-                else if(((tbl[6][0] - tbl[6][1]) < edgeCaptureValue) &&  (edgeCaptureValue < (tbl[6][0] + tbl[6][1])))
-                {
+                } else if (((tbl[6][0] - tbl[6][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[6][0] + tbl[6][1]))) {
                     // AEHAフォーマットのリピート
                     repeatFlag = 1;
                 }
- 
-                
-                switch(nFrame)
-                {
-                    case NODE_WAIT:
-                        // 受信待機
-                        break;
-                    case NODE_NEC_CUSTOMERCODE_L:
-                        if(rcvByteFlag)
-                        {
-                            // 1バイト受信した
-                            rcvByteFlag = 0;
-                            dataFrameBuffer[dataFrameCounter] = rcvByteBuffer;
-                            
-                            if(++dataFrameCounter == DATA_BUFFER_SIZE)
-                            {
-                                dataFrameCounter = 0;
-                                nFrame = NODE_WAIT;
-                            }
-                            
-                            nFrame = NODE_NEC_CUSTOMERCODE_H;
-                        }
-                        break;
-                    case NODE_NEC_CUSTOMERCODE_H:
-                        if(rcvByteFlag)
-                        {
-                            // 1バイト受信した
-                            rcvByteFlag = 0;
-                            dataFrameBuffer[dataFrameCounter] = rcvByteBuffer;
-                            
-                            if(++dataFrameCounter == DATA_BUFFER_SIZE)
-                            {
-                                dataFrameCounter = 0;
-                                nFrame = NODE_WAIT;
-                            }
-                            
-                            nFrame = NODE_NEC_DATA;
-                        }
-                        break;
-                    case NODE_NEC_DATA:
-                        if(rcvByteFlag)
-                        {
-                            // 1バイト受信した
-                            rcvByteFlag = 0;
-                            dataFrameBuffer[dataFrameCounter] = rcvByteBuffer;
-
-                            if(++dataFrameCounter == DATA_BUFFER_SIZE)
-                            {
-                                dataFrameCounter = 0;
-                                nFrame = NODE_WAIT;
-                            }
-
-                            nFrame = NODE_NEC_nDATA;
-                        }
-                        break;
-                    case NODE_NEC_nDATA:
-                        if(rcvByteFlag)
-                        {
-                            // 1バイト受信した
-                            rcvByteFlag = 0;
-                            dataFrameBuffer[dataFrameCounter] = rcvByteBuffer;
-
-                            if(++dataFrameCounter == DATA_BUFFER_SIZE)
-                            {
-                                dataFrameCounter = 0;
-                                nFrame = NODE_WAIT;
-                            }
-
-                            nFrame = NODE_RECEIVE_COMPLETE;
-                        }
-                        break;
-                    case NODE_AEHA_CUSTOMERCODE_L:
-                        if(rcvByteFlag)
-                        {
-                            // 1バイト受信した
-                            rcvByteFlag = 0;
-                            dataFrameBuffer[dataFrameCounter] = rcvByteBuffer;
-
-                            if(++dataFrameCounter == DATA_BUFFER_SIZE)
-                            {
-                                dataFrameCounter = 0;
-                                nFrame = NODE_WAIT;
-                            }
-
-                            nFrame = NODE_AEHA_CUSTOMERCODE_H;
-                        }                        
-                        break;
-                    case NODE_AEHA_CUSTOMERCODE_H:
-                        if(rcvByteFlag)
-                        {
-                            // 1バイト受信した
-                            rcvByteFlag = 0;
-                            dataFrameBuffer[dataFrameCounter] = rcvByteBuffer;
-
-                            if(++dataFrameCounter == DATA_BUFFER_SIZE)
-                            {
-                                dataFrameCounter = 0;
-                                nFrame = NODE_WAIT;
-                            }
-
-                            nFrame = NODE_AEHA_PARITY_SYSTEM;
-                        }                        
-                        break;
-                    case NODE_AEHA_PARITY_SYSTEM:
-                        if(rcvByteFlag)
-                        {
-                            // 1バイト受信した
-                            rcvByteFlag = 0;
-                            dataFrameBuffer[dataFrameCounter] = rcvByteBuffer;
-
-                            if(++dataFrameCounter == DATA_BUFFER_SIZE)
-                            {
-                                dataFrameCounter = 0;
-                                nFrame = NODE_WAIT;
-                            }
-
-                            nFrame = NODE_AEHA_DATA_N;
-                        }                        
-                        break;
-                    case NODE_AEHA_DATA_N:
-                        if(rcvByteFlag)
-                        {
-                            // 1バイト受信した
-                            rcvByteFlag = 0;
-                            dataFrameBuffer[dataFrameCounter] = rcvByteBuffer;
-
-                            if(++dataFrameCounter == DATA_BUFFER_SIZE)
-                            {
-                                dataFrameCounter = 0;
-                                nFrame = NODE_RECEIVE_COMPLETE; // AEHAの場合は受信完了扱い
-                            }
-
-                            aehaTrailerEnable = 1; // 最後のバイトか確認する → トレーラーを探す
-                            nFrame = NODE_AEHA_DATA_N;
-                        }                        
-                        break;
-                    case NODE_RECEIVE_COMPLETE:
-                        // ここでコマンドに応じた処理を行うか､処理部を外に出す
-                        nFrame = NODE_WAIT;
-                        break;
-                    case NODE_TIMEOUT:
-                        nFrame = NODE_WAIT;
-                        break;
-                    default:
-                        break;
-                }
             }
+        }
+
+
+        switch (nFrame) {
+            case NODE_WAIT:
+                // 受信待機
+                break;
+            case NODE_NEC_CUSTOMERCODE_L:
+                if (rcvByteFlag) {
+                    // 1バイト受信した
+                    rcvByteFlag = 0;
+                    dataFrameBuffer[dataFrameCounter] = rcvByteBuffer;
+
+                    if (++dataFrameCounter == DATA_BUFFER_SIZE) {
+                        dataFrameCounter = 0;
+                        nFrame = NODE_WAIT;
+                    }
+
+                    nFrame = NODE_NEC_CUSTOMERCODE_H;
+                }
+                break;
+            case NODE_NEC_CUSTOMERCODE_H:
+                if (rcvByteFlag) {
+                    // 1バイト受信した
+                    rcvByteFlag = 0;
+                    dataFrameBuffer[dataFrameCounter] = rcvByteBuffer;
+
+                    if (++dataFrameCounter == DATA_BUFFER_SIZE) {
+                        dataFrameCounter = 0;
+                        nFrame = NODE_WAIT;
+                    }
+
+                    nFrame = NODE_NEC_DATA;
+                }
+                break;
+            case NODE_NEC_DATA:
+                if (rcvByteFlag) {
+                    // 1バイト受信した
+                    rcvByteFlag = 0;
+                    dataFrameBuffer[dataFrameCounter] = rcvByteBuffer;
+
+                    if (++dataFrameCounter == DATA_BUFFER_SIZE) {
+                        dataFrameCounter = 0;
+                        nFrame = NODE_WAIT;
+                    }
+
+                    nFrame = NODE_NEC_nDATA;
+                }
+                break;
+            case NODE_NEC_nDATA:
+                if (rcvByteFlag) {
+                    // 1バイト受信した
+                    rcvByteFlag = 0;
+                    dataFrameBuffer[dataFrameCounter] = rcvByteBuffer;
+
+                    if (++dataFrameCounter == DATA_BUFFER_SIZE) {
+                        dataFrameCounter = 0;
+                        nFrame = NODE_WAIT;
+                    }
+
+                    nFrame = NODE_RECEIVE_COMPLETE_NEC;
+                }
+                break;
+            case NODE_AEHA_CUSTOMERCODE_L:
+                if (rcvByteFlag) {
+                    // 1バイト受信した
+                    rcvByteFlag = 0;
+                    dataFrameBuffer[dataFrameCounter] = rcvByteBuffer;
+
+                    if (++dataFrameCounter == DATA_BUFFER_SIZE) {
+                        dataFrameCounter = 0;
+                        nFrame = NODE_WAIT;
+                    }
+
+                    nFrame = NODE_AEHA_CUSTOMERCODE_H;
+                }
+                break;
+            case NODE_AEHA_CUSTOMERCODE_H:
+                if (rcvByteFlag) {
+                    // 1バイト受信した
+                    rcvByteFlag = 0;
+                    dataFrameBuffer[dataFrameCounter] = rcvByteBuffer;
+
+                    if (++dataFrameCounter == DATA_BUFFER_SIZE) {
+                        dataFrameCounter = 0;
+                        nFrame = NODE_WAIT;
+                    }
+
+                    nFrame = NODE_AEHA_PARITY_SYSTEM;
+                }
+                break;
+            case NODE_AEHA_PARITY_SYSTEM:
+                if (rcvByteFlag) {
+                    // 1バイト受信した
+                    rcvByteFlag = 0;
+                    dataFrameBuffer[dataFrameCounter] = rcvByteBuffer;
+
+                    if (++dataFrameCounter == DATA_BUFFER_SIZE) {
+                        dataFrameCounter = 0;
+                        nFrame = NODE_WAIT;
+                    }
+
+                    aehaTrailerEnable = 1;
+                    nFrame = NODE_AEHA_DATA_N;
+                }
+                break;
+            case NODE_AEHA_DATA_N:
+                if (rcvByteFlag) {
+                    // 1バイト受信した
+                    rcvByteFlag = 0;
+                    dataFrameBuffer[dataFrameCounter] = rcvByteBuffer;
+
+                    if (++dataFrameCounter == DATA_BUFFER_SIZE) {
+                        dataFrameCounter = 0;
+                        nFrame = NODE_RECEIVE_COMPLETE_AEHA; // AEHAの場合は受信完了扱い
+                    }
+
+                    aehaTrailerCounter = AEHA_TRAILER_TIME;
+                    nFrame = NODE_AEHA_DATA_N;
+                }
+                break;
+            case NODE_RECEIVE_COMPLETE_NEC:
+                // ここでコマンドに応じた処理を行うか､処理部を外に出す
+                // 受信バイト数: dataFrameCounter - 1
+                // 受信内容: dataFrameBuffer[]
+                nFrame = NODE_WAIT;
+                break;
+            case NODE_RECEIVE_COMPLETE_AEHA:
+                // ここでコマンドに応じた処理を行うか､処理部を外に出す
+                // 受信バイト数: dataFrameCounter - 1
+                // 受信内容: dataFrameBuffer[]
+                nFrame = NODE_WAIT;
+                break;
+            case NODE_TIMEOUT:
+                // 受信タイムアウト
+                // 受信した内容やカウンタをクリア → 内容はリピート信号で再利用するため
+                nFrame = NODE_WAIT;
+                break;
+            case NODE_WAIT_FOR_REPEAT:
+                // リピート信号待ち
+                // 受信タイムアウトで終了
+                break;
+            default:
+                break;
         }
     }
     return;
 }
 
-void calIntervalTimer(void)
-{
+void calIntervalTimer(void) {
     // 対象単位時間ごとに実行する
     // 10msec用フラグはTMR0割り込みで立てる
-    if(++intvTmrCnt.fields.counter100msec == INTERVALTIMER_100MSEC)
-    {
+    if (++intvTmrCnt.fields.counter100msec == INTERVALTIMER_100MSEC) {
         intvTmrCnt.fields.counter100msec = 0;
         intvTmrFlg.fields.flag100msec = 1;
     }
 
-    if(++intvTmrCnt.fields.counter200msec == INTERVALTIMER_200MSEC)
-    {
+    if (++intvTmrCnt.fields.counter200msec == INTERVALTIMER_200MSEC) {
         intvTmrCnt.fields.counter200msec = 0;
         intvTmrFlg.fields.flag200msec = 1;
     }
-    
-    if(++intvTmrCnt.fields.counter500msec == INTERVALTIMER_500MSEC)
-    {
+
+    if (++intvTmrCnt.fields.counter500msec == INTERVALTIMER_500MSEC) {
         intvTmrCnt.fields.counter500msec = 0;
         intvTmrFlg.fields.flag500msec = 1;
     }
-    
-    if(++intvTmrCnt.fields.counter1sec == INTERVALTIMER_1SEC)
-    {
+
+    if (++intvTmrCnt.fields.counter1sec == INTERVALTIMER_1SEC) {
         intvTmrCnt.fields.counter1sec = 0;
         intvTmrFlg.fields.flag1sec = 1;
     }
 
-    if(++intvTmrCnt.fields.counter2sec == INTERVALTIMER_2SEC)
-    {
+    if (++intvTmrCnt.fields.counter2sec == INTERVALTIMER_2SEC) {
         intvTmrCnt.fields.counter2sec = 0;
         intvTmrFlg.fields.flag2sec = 1;
     }
