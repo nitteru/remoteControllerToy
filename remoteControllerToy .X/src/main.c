@@ -144,7 +144,7 @@ void main(void) {
                     aehaTrailerCounter = AEHA_TRAILER_TIME;
                     aehaTrailerEnable = 0;
                     aehaTrailerFlag = 1;
-                    nFrame = NODE_RECEIVE_COMPLETE;
+                    nFrame = NODE_RECEIVE_COMPLETE_AEHA;
                 }
             }
         }
