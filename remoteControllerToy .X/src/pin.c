@@ -21,7 +21,7 @@ void PinInitialize(void) {
     
     // PORTC [7:0]
     PORTC = 0b00000000; // Output Cleared
-    TRISC = 0b00000000; // All Output
+    TRISC = 0b10000010; // RC1:CCP2_IN, RC7:UART_RX
 
     // PORTD [7:0]
     PORTD = 0b00000000; // Output Cleared

@@ -77,7 +77,7 @@
  * ON: RB3/PGM pin has PGM function; low-voltage programming enabled
  * OFF: RB3 is digital I/O, HV on MCLR must be used for programming
  */
-#pragma config LVP = ON
+#pragma config LVP = OFF
 
 /*
  * CPD Data EE Memory Code Protection

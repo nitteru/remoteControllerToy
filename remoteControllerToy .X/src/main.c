@@ -355,24 +355,31 @@ void main(void) {
                     dataFrameBuffer[dataFrameCounter] = rcvByteBuffer;
 
                     if (++dataFrameCounter == DATA_BUFFER_SIZE) {
-                        dataFrameCounter = 0;
+                        //dataFrameCounter = 0;
                         nFrame = NODE_RECEIVE_COMPLETE_AEHA; // AEHAの場合は受信完了扱い
                     }
-
-                    aehaTrailerCounter = AEHA_TRAILER_TIME;
-                    nFrame = NODE_AEHA_DATA_N;
+                    else {
+                        nFrame = NODE_AEHA_DATA_N;
+                        aehaTrailerCounter = AEHA_TRAILER_TIME;
+                    }
                 }
                 break;
             case NODE_RECEIVE_COMPLETE_NEC:
                 // ここでコマンドに応じた処理を行うか､処理部を外に出す
                 // 受信バイト数: dataFrameCounter - 1
                 // 受信内容: dataFrameBuffer[]
+                
+                // とりあえずUARTに出力
+                
                 nFrame = NODE_WAIT;
                 break;
             case NODE_RECEIVE_COMPLETE_AEHA:
                 // ここでコマンドに応じた処理を行うか､処理部を外に出す
                 // 受信バイト数: dataFrameCounter - 1
                 // 受信内容: dataFrameBuffer[]
+                
+                // とりあえずUARTに出力
+                
                 nFrame = NODE_WAIT;
                 break;
             case NODE_TIMEOUT:
