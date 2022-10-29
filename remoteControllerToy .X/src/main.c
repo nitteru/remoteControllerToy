@@ -42,6 +42,11 @@ uint8_t rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC; // 受信タイムアウト�
 uint8_t aehaTrailerEnable = 0; // AEHAトレーラー受信管理
 uint8_t aehaTrailerFlag = 0; // AEHAトレーラー受信フラグ
 uint8_t aehaTrailerCounter = AEHA_TRAILER_TIME; // AEHAトレーラー用カウンタ
+
+#ifdef DEBUG_PRINT
+uint8_t foo = 0;
+#endif
+
 /*
  * High→Lowで区切られる区間の既定値(タイマーカウント値)､誤差範囲(概ね±30%)のセット
  * [0][*]: NECフォーマットリーダー 24T
@@ -56,6 +61,7 @@ uint8_t aehaTrailerCounter = AEHA_TRAILER_TIME; // AEHAトレーラー用カウ�
  * TMR1の分解能: 250nsec * 8 = 2usec
  * 各区間を2usecで割った値で定義していく
  */
+#if 0
 const uint16_t tbl[8][2] = {
     {6744, 2032},
     {2550, 765},
@@ -66,6 +72,18 @@ const uint16_t tbl[8][2] = {
     {5620, 1686},
     {3400, 1020}
 };
+#else
+const uint16_t tbl[8][2] = {
+    {6744, 674},
+    {2550, 255},
+    {562, 56},
+    {1124, 112},
+    {425, 42},
+    {850, 85},
+    {5620, 562},
+    {3400, 340}
+};
+#endif
 
 void main(void) {
     disableGlobalInterrupt();
@@ -131,7 +149,17 @@ void main(void) {
                     rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
                     rcvTimeOutEnable = 0;
                     //rcvTimeOutFlag = 1;
+                    repeatFlag = 0;
                     nFrame = NODE_TIMEOUT;
+                    
+                    if(nFrame == NODE_WAIT_FOR_REPEAT)
+                    {
+                        //DEBUG_Toggle();
+                    }
+                    else
+                    {
+                        DEBUG_Toggle();
+                    }
                 }
             }
 
@@ -223,27 +251,34 @@ void main(void) {
                 } else if (((tbl[2][0] - tbl[2][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[2][0] + tbl[2][1]))) {
                     // NEC,AEHAフォーマットの0
                     rcvByteBuffer = (rcvByteBuffer >> rcvShiftCounter);
+                    rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
+                    
                     if (++rcvShiftCounter == 8) {
                         // 1Byte受信
+                        rcvShiftCounter = 0;
                         rcvByteFlag = 1;
                     }
                 } else if (((tbl[3][0] - tbl[3][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[3][0] + tbl[3][1]))) {
                     // NEC,AEHAフォーマットの1
                     rcvByteBuffer = (rcvByteBuffer >> rcvShiftCounter) & 0x80;
+                    rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
+                    
                     if (++rcvShiftCounter == 8) {
                         // 1Byte受信
+                        rcvShiftCounter = 0;
                         rcvByteFlag = 1;
                     }
-                } else if (((tbl[5][0] - tbl[5][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[5][0] + tbl[5][1]))) {
-                    // NECフォーマットのリピート
-                    repeatFlag = 1;
                 } else if (((tbl[6][0] - tbl[6][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[6][0] + tbl[6][1]))) {
+                    // NECフォーマットのリピート
+                    rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
+                    repeatFlag = 1;
+                } else if (((tbl[7][0] - tbl[7][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[7][0] + tbl[7][1]))) {
                     // AEHAフォーマットのリピート
+                    rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
                     repeatFlag = 1;
                 }
             }
         }
-
 
         switch (nFrame) {
             case NODE_WAIT:
@@ -365,37 +400,82 @@ void main(void) {
                 }
                 break;
             case NODE_RECEIVE_COMPLETE_NEC:
+                rcvTimeOutEnable = 1;
+                rcvTimeOutFlag = 0;
+                rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
                 // ここでコマンドに応じた処理を行うか､処理部を外に出す
                 // 受信バイト数: dataFrameCounter - 1
                 // 受信内容: dataFrameBuffer[]
                 
                 // とりあえずUARTに出力
-                
-                nFrame = NODE_WAIT;
+#ifdef DEBUG_PRINT
+                // デバッグ用出力
+                for(uint8_t i = 0; i < (dataFrameCounter - 1); i++)
+                {
+                    foo = dataFrameBuffer[i];
+                    if (USART_is_tx_ready())
+                    {
+                        USART_Write(foo);
+                    }
+                }
+#endif
+                nFrame = NODE_WAIT_FOR_REPEAT;
                 break;
             case NODE_RECEIVE_COMPLETE_AEHA:
+                rcvTimeOutEnable = 1;
+                rcvTimeOutFlag = 0;
+                rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
                 // ここでコマンドに応じた処理を行うか､処理部を外に出す
                 // 受信バイト数: dataFrameCounter - 1
                 // 受信内容: dataFrameBuffer[]
                 
                 // とりあえずUARTに出力
-                
-                nFrame = NODE_WAIT;
+#ifdef DEBUG_PRINT
+                // デバッグ用出力
+                for(uint8_t i = 0; i < (dataFrameCounter - 1); i++)
+                {
+                    foo = dataFrameBuffer[i];
+                    if (USART_is_tx_ready())
+                    {
+                        USART_Write(foo);
+                    }
+                }
+#endif
+                nFrame = NODE_WAIT_FOR_REPEAT;
                 break;
             case NODE_TIMEOUT:
                 // 受信タイムアウト
                 // 受信した内容やカウンタをクリア → 内容はリピート信号で再利用するため
+                repeatFlag = 0;
+                rcvByteBuffer = 0;
+                rcvShiftCounter = 0;
+                rcvByteFlag = 0;
+                dataFrameCounter = 0;
+
+                for (uint8_t i = 0; i < DATA_BUFFER_SIZE; i++) {
+                    dataFrameBuffer[i] = 0x00;
+                }
+                
                 nFrame = NODE_WAIT;
                 break;
             case NODE_WAIT_FOR_REPEAT:
                 // リピート信号待ち
                 // 受信タイムアウトで終了
+                if(repeatFlag)
+                {
+                    // リピート時の対応
+                    rcvTimeOutEnable = 1;
+                    rcvTimeOutFlag = 0;
+                    rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
+                    
+                    // 受信バイト数: dataFrameCounter - 1
+                    // 受信内容: dataFrameBuffer[]
+                }
                 break;
             default:
                 break;
         }
     }
-    return;
 }
 
 void calIntervalTimer(void) {

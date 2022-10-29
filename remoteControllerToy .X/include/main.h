@@ -32,6 +32,11 @@
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
+/*
+ * デバッグ用スイッチ
+ */
+#define DEBUG_PRINT // UART出力
+
 // インターバルタイマ カウンタ上限値 10msec*上限値
 #define INTERVALTIMER_100MSEC (uint8_t)10
 #define INTERVALTIMER_200MSEC (uint8_t)20

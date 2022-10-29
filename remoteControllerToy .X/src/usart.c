@@ -24,3 +24,12 @@ void USARTInitialize(void) {
     
     PIE1bits.RCIE = 1;
 }
+
+void USART_Write(uint8_t data)
+{
+    while (0 == PIR1bits.TXIF)
+    {
+    }
+
+    TXREG = data;
+}

@@ -73,4 +73,8 @@
  */
 #define SPBRG_VALUE 0x81
 
+#define USART_Disable() (RCSTAbits.SPEN = 0)
+#define USART_is_tx_ready() (uint8_t)(PIR1bits.TXIF && TXSTAbits.TXEN)
+
 void USARTInitialize(void);
+void USART_Write(uint8_t);

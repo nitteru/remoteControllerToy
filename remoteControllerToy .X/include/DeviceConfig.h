@@ -48,13 +48,15 @@
  * WDTE Watchdog Timer Enable bit
  * ON: WDT enable, OFF: WDT disable
  */
-#pragma config WDTE = ON
+//#pragma config WDTE = ON
+#pragma config WDTE = OFF
 
 /*
  * PWRTE Power-up Timer Enable bit
  * ON: PWRT enable, OFF: PWRT disable
  */
-#pragma config PWRTE = ON
+//#pragma config PWRTE = ON
+#pragma config PWRTE = OFF
 
 /*
  * CP FLASH Program Memory Code Protection bits
