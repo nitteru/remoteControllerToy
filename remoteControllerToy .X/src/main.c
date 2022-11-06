@@ -126,7 +126,6 @@ void main(void) {
         }
 #endif
 
-        // Todo CCPの設定を追加したい
 
 #ifdef ENABLE_USART
         if (RCSTAbits.OERR) {
