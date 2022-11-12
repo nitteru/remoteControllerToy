@@ -257,6 +257,9 @@ void main(void)
                         // 1Byte受信
                         rcvByteFlag = 1;
                     }
+                    
+                    // AEHAのときだけ走るようにする
+                    aehaTrailerEnable = 1; // 最後のバイトか確認する → トレーラーを探す
                 }
                 else if(((tbl[3][0] - tbl[3][1]) < edgeCaptureValue) &&  (edgeCaptureValue < (tbl[3][0] + tbl[3][1])))
                 {
@@ -266,7 +269,10 @@ void main(void)
                     {
                         // 1Byte受信
                         rcvByteFlag = 1;
-                    }                    
+                    }
+                    
+                    // AEHAのときだけ走るようにする
+                    aehaTrailerEnable = 1; // 最後のバイトか確認する → トレーラーを探す                    
                 }
                 else if(((tbl[5][0] - tbl[5][1]) < edgeCaptureValue) &&  (edgeCaptureValue < (tbl[5][0] + tbl[5][1])))
                 {
@@ -410,7 +416,6 @@ void main(void)
                                 nFrame = NODE_RECEIVE_COMPLETE; // AEHAの場合は受信完了扱い
                             }
 
-                            aehaTrailerEnable = 1; // 最後のバイトか確認する → トレーラーを探す
                             nFrame = NODE_AEHA_DATA_N;
                         }                        
                         break;
