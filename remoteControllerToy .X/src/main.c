@@ -43,6 +43,9 @@ uint8_t aehaTrailerEnable = 0; // AEHAトレーラー受信管理
 uint8_t aehaTrailerFlag = 0; // AEHAトレーラー受信フラグ
 uint8_t aehaTrailerCounter = AEHA_TRAILER_TIME; // AEHAトレーラー用カウンタ
 
+uint8_t statusLED1Enable = 0; // ステータスLED点灯フラグ
+uint8_t statusLED1Counter = 0; // ステータスLED管理カウンタ
+
 #ifdef DEBUG_PRINT
 uint8_t foo = 0;
 #endif
@@ -172,6 +175,28 @@ void main(void) {
                     aehaTrailerEnable = 0;
                     aehaTrailerFlag = 1;
                     nFrame = NODE_RECEIVE_COMPLETE_AEHA;
+                }
+            }
+            
+            if(statusLED1Enable)
+            {
+                if(statusLED1Counter == STATUS_LED1_ON_TIME + STATUS_LED1_OFF_TIME)
+                {
+                    LED1_SetHigh();
+                    statusLED1Counter--;
+                }
+                else if(statusLED1Counter == STATUS_LED1_OFF_TIME)
+                {
+                    LED1_SetLow();
+                    statusLED1Counter--;
+                }
+                else if(statusLED1Counter == 0)
+                {
+                    statusLED1Enable = 0;
+                }
+                else
+                {
+                    statusLED1Counter--;
                 }
             }
         }
@@ -576,6 +601,13 @@ void main(void) {
                     }
                 }
 #endif
+                // ステータスLED点灯
+                if(!statusLED1Enable)
+                {
+                    statusLED1Counter = STATUS_LED1_ON_TIME + STATUS_LED1_OFF_TIME;
+                    statusLED1Enable = 1;
+                }
+                
                 nFrame = NODE_WAIT_FOR_REPEAT;
                 break;
             case NODE_RECEIVE_COMPLETE_AEHA:

@@ -16,6 +16,7 @@
 #
 SHELL=cmd.exe
 <<<<<<< HEAD
+<<<<<<< HEAD
 PATH_TO_IDE_BIN=C:/Program Files/Microchip/MPLABX/v6.05/mplab_platform/platform/../mplab_ide/modules/../../bin/
 # Adding MPLAB X bin directory to path.
 PATH:=C:/Program Files/Microchip/MPLABX/v6.05/mplab_platform/platform/../mplab_ide/modules/../../bin/:$(PATH)
@@ -23,11 +24,18 @@ PATH:=C:/Program Files/Microchip/MPLABX/v6.05/mplab_platform/platform/../mplab_i
 MP_JAVA_PATH="C:\Program Files\Microchip\MPLABX\v6.05\sys\java\zulu8.64.0.19-ca-fx-jre8.0.345-win_x64/bin/"
 =======
 PATH_TO_IDE_BIN=C:/Program Files/Microchip/MPLABX/v6.00/mplab_platform/platform/../mplab_ide/modules/../../bin/
+=======
+PATH_TO_IDE_BIN=C:/Program Files/Microchip/MPLABX/v6.05/mplab_platform/platform/../mplab_ide/modules/../../bin/
+>>>>>>> 40a9de4a93c834de0e66597df732d79ef9204b15
 # Adding MPLAB X bin directory to path.
-PATH:=C:/Program Files/Microchip/MPLABX/v6.00/mplab_platform/platform/../mplab_ide/modules/../../bin/:$(PATH)
+PATH:=C:/Program Files/Microchip/MPLABX/v6.05/mplab_platform/platform/../mplab_ide/modules/../../bin/:$(PATH)
 # Path to java used to run MPLAB X when this makefile was created
+<<<<<<< HEAD
 MP_JAVA_PATH="C:\Program Files\Microchip\MPLABX\v6.00\sys\java\zulu8.54.0.21-ca-fx-jre8.0.292-win_x64/bin/"
 >>>>>>> 1d091586d5a9913b8d5f1ffa7d22408ec766c3f5
+=======
+MP_JAVA_PATH="C:\Program Files\Microchip\MPLABX\v6.05\sys\java\zulu8.64.0.19-ca-fx-jre8.0.345-win_x64/bin/"
+>>>>>>> 40a9de4a93c834de0e66597df732d79ef9204b15
 OS_CURRENT="$(shell uname -s)"
 MP_CC="C:\Program Files\Microchip\xc8\v2.40\bin\xc8-cc.exe"
 # MP_CPPC is not defined
@@ -36,10 +44,14 @@ MP_AS="C:\Program Files\Microchip\xc8\v2.40\bin\xc8-cc.exe"
 MP_LD="C:\Program Files\Microchip\xc8\v2.40\bin\xc8-cc.exe"
 MP_AR="C:\Program Files\Microchip\xc8\v2.40\bin\xc8-ar.exe"
 <<<<<<< HEAD
+<<<<<<< HEAD
 DEP_GEN=${MP_JAVA_PATH}java -jar "C:/Program Files/Microchip/MPLABX/v6.05/mplab_platform/platform/../mplab_ide/modules/../../bin/extractobjectdependencies.jar"
 =======
 DEP_GEN=${MP_JAVA_PATH}java -jar "C:/Program Files/Microchip/MPLABX/v6.00/mplab_platform/platform/../mplab_ide/modules/../../bin/extractobjectdependencies.jar"
 >>>>>>> 1d091586d5a9913b8d5f1ffa7d22408ec766c3f5
+=======
+DEP_GEN=${MP_JAVA_PATH}java -jar "C:/Program Files/Microchip/MPLABX/v6.05/mplab_platform/platform/../mplab_ide/modules/../../bin/extractobjectdependencies.jar"
+>>>>>>> 40a9de4a93c834de0e66597df732d79ef9204b15
 MP_CC_DIR="C:\Program Files\Microchip\xc8\v2.40\bin"
 # MP_CPPC_DIR is not defined
 # MP_BC_DIR is not defined
@@ -47,8 +59,12 @@ MP_AS_DIR="C:\Program Files\Microchip\xc8\v2.40\bin"
 MP_LD_DIR="C:\Program Files\Microchip\xc8\v2.40\bin"
 MP_AR_DIR="C:\Program Files\Microchip\xc8\v2.40\bin"
 <<<<<<< HEAD
+<<<<<<< HEAD
 DFP_DIR=C:/Program Files/Microchip/MPLABX/v6.05/packs/Microchip/PIC16Fxxx_DFP/1.3.42
 =======
 # MP_BC_DIR is not defined
 DFP_DIR=C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC16Fxxx_DFP/1.3.42
 >>>>>>> 1d091586d5a9913b8d5f1ffa7d22408ec766c3f5
+=======
+DFP_DIR=C:/Program Files/Microchip/MPLABX/v6.05/packs/Microchip/PIC16Fxxx_DFP/1.3.42
+>>>>>>> 40a9de4a93c834de0e66597df732d79ef9204b15

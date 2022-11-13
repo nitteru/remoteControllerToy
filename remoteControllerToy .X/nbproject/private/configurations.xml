@@ -9,8 +9,12 @@
       <languageToolchainDir>C:\Program Files\Microchip\xc8\v2.36\bin</languageToolchainDir>
 =======
       <platformToolSN>:=MPLABComm-USB-Microchip:=&lt;vid>04D8:=&lt;pid>9009:=&lt;rev>0100:=&lt;man>Microchip Technology, Inc. (www.microchip.com):=&lt;prod>MPLAB ICD3 tm (www.microchip.com):=&lt;sn>JIT171710218:=&lt;drv>x:=&lt;xpt>b:=end</platformToolSN>
+<<<<<<< HEAD
       <languageToolchainDir>D:\Program Files\Microchip\xc8\v2.40\bin</languageToolchainDir>
 >>>>>>> 1d091586d5a9913b8d5f1ffa7d22408ec766c3f5
+=======
+      <languageToolchainDir>C:\Program Files\Microchip\xc8\v2.40\bin</languageToolchainDir>
+>>>>>>> 40a9de4a93c834de0e66597df732d79ef9204b15
       <mdbdebugger version="1">
         <placeholder1>place holder 1</placeholder1>
         <placeholder2>place holder 2</placeholder2>

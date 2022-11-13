@@ -6,19 +6,7 @@
         <group/>
 =======
         <group>
-            <file>file:/C:/home/nishi/src/remoteControllerToy/remoteControllerToy%20.X/include/DeviceConfig.h</file>
-            <file>file:/C:/home/nishi/src/remoteControllerToy/remoteControllerToy%20.X/include/main.h</file>
-            <file>file:/C:/home/nishi/src/remoteControllerToy/remoteControllerToy%20.X/src/pin.c</file>
-            <file>file:/C:/home/nishi/src/remoteControllerToy/remoteControllerToy%20.X/src/ccp2.c</file>
-            <file>file:/C:/home/nishi/src/remoteControllerToy/remoteControllerToy%20.X/src/ccp1.c</file>
-            <file>file:/C:/home/nishi/src/remoteControllerToy/remoteControllerToy%20.X/include/tmr1.h</file>
-            <file>file:/C:/home/nishi/src/remoteControllerToy/remoteControllerToy%20.X/src/init.c</file>
-            <file>file:/C:/home/nishi/src/remoteControllerToy/remoteControllerToy%20.X/src/tmr1.c</file>
             <file>file:/C:/home/nishi/src/remoteControllerToy/remoteControllerToy%20.X/src/main.c</file>
-            <file>file:/C:/home/nishi/src/remoteControllerToy/remoteControllerToy%20.X/src/tmr0.c</file>
-            <file>file:/C:/home/nishi/src/remoteControllerToy/remoteControllerToy%20.X/include/ccp2.h</file>
-            <file>file:/C:/home/nishi/src/remoteControllerToy/remoteControllerToy%20.X/include/ccp1.h</file>
-            <file>file:/C:/home/nishi/src/remoteControllerToy/remoteControllerToy%20.X/src/interrupt.c</file>
         </group>
 >>>>>>> 1d091586d5a9913b8d5f1ffa7d22408ec766c3f5
     </open-files>

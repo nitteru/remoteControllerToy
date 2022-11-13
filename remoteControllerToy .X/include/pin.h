@@ -35,6 +35,54 @@
 
 //#define INPUT_RA0 PORTAbits.RA0
 
+// ステータスLED1
+#define LED1_SetHigh() \
+    do                      \
+    {                       \
+        PORTDbits.RD2 = 1; \
+    } while (0)
+#define LED1_SetLow()  \
+    do                      \
+    {                       \
+        PORTDbits.RD2 = 0; \
+    } while (0)
+#define LED1_Toggle()                \
+    do                                    \
+    {                                     \
+        PORTDbits.RD2 = ~PORTDbits.RD2; \
+    } while (0)
+#define LED1_getValue() PORTBbits.RD2
+#define LED1_SetDigitalInput() \
+    do                              \
+    {                               \
+        TRISBbits.TRISD2 = 1;       \
+    } while (0)
+#define LED1_SetDigitalOutput() \
+    do                               \
+    {                                \
+        TRISBbits.TRISD2 = 0;        \
+    } while (0)
+#define LED1_SetPullup() \
+    do                        \
+    {                         \
+        WPUBbits.WPUD2 = 1;   \
+    } while (0)
+#define LED1_ResetPullup() \
+    do                          \
+    {                           \
+        WPUBbits.WPUD2 = 0;     \
+    } while (0)
+#define LED1_SetAnalogMode() \
+    do                            \
+    {                             \
+        ANSELBbits.ANSD2 = 1;     \
+    } while (0)
+#define LED1_SetDigitalMode() \
+    do                             \
+    {                              \
+        ANSELBbits.ANSD2 = 0;      \
+    } while (0)
+
 #if 1
 // デバッグ RB6, TP5
 #define DEBUG_SetHigh() \
