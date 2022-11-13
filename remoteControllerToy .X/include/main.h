@@ -32,6 +32,11 @@
 
 #include <xc.h> // include processor files - each processor file is guarded.  
 
+/*
+ * デバッグ用スイッチ
+ */
+#define DEBUG_PRINT // UART出力
+
 // インターバルタイマ カウンタ上限値 10msec*上限値
 #define INTERVALTIMER_100MSEC (uint8_t)10
 #define INTERVALTIMER_200MSEC (uint8_t)20
@@ -158,9 +163,11 @@ enum nodeFrame
     NODE_AEHA_PARITY_SYSTEM, // パリティ4ビット+システムコード4ビット (AEHA)
     NODE_AEHA_DATA_N, // データ 送信バイト数は任意
     NODE_TIMEOUT, // 受信タイムアウト
-    NODE_RECEIVE_COMPLETE // 受信完了
+    NODE_RECEIVE_COMPLETE_NEC, // NECフォーマット受信完了
+    NODE_RECEIVE_COMPLETE_AEHA, // AEHAフォーマット受信完了
             // AEHAはトレーラ(1T, 8ms以上の空白)をもって終端とする
             // NECは規定バイト数受信したら完了とする
+    NODE_WAIT_FOR_REPEAT // リピート待ち → タイムアウトで終了
 };
 
 // 受信したデータ

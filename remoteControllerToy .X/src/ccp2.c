@@ -41,6 +41,8 @@ void CCP2Initialize(void)
     CCPR2L = 0x00;
     CCPR2H = 0x00;
 #endif
+    
+    PIE2bits.CCP2IE = 1; // CCP割り込みが入らない 221028
 }
 
 #if CCP2_MODE == 0x00

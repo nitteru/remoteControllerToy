@@ -33,6 +33,56 @@
 #include <xc.h> // include processor files - each processor file is guarded.  
 
 
-#define INPUT_RA0 PORTAbits.RA0
+//#define INPUT_RA0 PORTAbits.RA0
+
+#if 1
+// デバッグ RB6, TP5
+#define DEBUG_SetHigh() \
+    do                      \
+    {                       \
+        PORTDbits.RD2 = 1; \
+    } while (0)
+#define DEBUG_SetLow()  \
+    do                      \
+    {                       \
+        PORTDbits.RD2 = 0; \
+    } while (0)
+#define DEBUG_Toggle()                \
+    do                                    \
+    {                                     \
+        PORTDbits.RD2 = ~PORTDbits.RD2; \
+    } while (0)
+#define DEBUG_getValue() PORTBbits.RD2
+#define DEBUG_SetDigitalInput() \
+    do                              \
+    {                               \
+        TRISBbits.TRISD2 = 1;       \
+    } while (0)
+#define DEBUG_SetDigitalOutput() \
+    do                               \
+    {                                \
+        TRISBbits.TRISD2 = 0;        \
+    } while (0)
+#define DEBUG_SetPullup() \
+    do                        \
+    {                         \
+        WPUBbits.WPUD2 = 1;   \
+    } while (0)
+#define DEBUG_ResetPullup() \
+    do                          \
+    {                           \
+        WPUBbits.WPUD2 = 0;     \
+    } while (0)
+#define DEBUG_SetAnalogMode() \
+    do                            \
+    {                             \
+        ANSELBbits.ANSD2 = 1;     \
+    } while (0)
+#define DEBUG_SetDigitalMode() \
+    do                             \
+    {                              \
+        ANSELBbits.ANSD2 = 0;      \
+    } while (0)
+#endif
 
 void PinInitialize(void);

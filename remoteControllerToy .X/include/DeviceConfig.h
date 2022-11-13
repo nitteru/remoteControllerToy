@@ -48,13 +48,15 @@
  * WDTE Watchdog Timer Enable bit
  * ON: WDT enable, OFF: WDT disable
  */
-#pragma config WDTE = ON
+//#pragma config WDTE = ON
+#pragma config WDTE = OFF
 
 /*
  * PWRTE Power-up Timer Enable bit
  * ON: PWRT enable, OFF: PWRT disable
  */
-#pragma config PWRTE = ON
+//#pragma config PWRTE = ON
+#pragma config PWRTE = OFF
 
 /*
  * CP FLASH Program Memory Code Protection bits
@@ -77,7 +79,7 @@
  * ON: RB3/PGM pin has PGM function; low-voltage programming enabled
  * OFF: RB3 is digital I/O, HV on MCLR must be used for programming
  */
-#pragma config LVP = ON
+#pragma config LVP = OFF
 
 /*
  * CPD Data EE Memory Code Protection

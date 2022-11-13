@@ -15,11 +15,19 @@
 # $ makeMP_CC="/opt/microchip/mplabc30/v3.30c/bin/pic30-gcc" ...  
 #
 SHELL=cmd.exe
+<<<<<<< HEAD
 PATH_TO_IDE_BIN=C:/Program Files/Microchip/MPLABX/v6.05/mplab_platform/platform/../mplab_ide/modules/../../bin/
 # Adding MPLAB X bin directory to path.
 PATH:=C:/Program Files/Microchip/MPLABX/v6.05/mplab_platform/platform/../mplab_ide/modules/../../bin/:$(PATH)
 # Path to java used to run MPLAB X when this makefile was created
 MP_JAVA_PATH="C:\Program Files\Microchip\MPLABX\v6.05\sys\java\zulu8.64.0.19-ca-fx-jre8.0.345-win_x64/bin/"
+=======
+PATH_TO_IDE_BIN=C:/Program Files/Microchip/MPLABX/v6.00/mplab_platform/platform/../mplab_ide/modules/../../bin/
+# Adding MPLAB X bin directory to path.
+PATH:=C:/Program Files/Microchip/MPLABX/v6.00/mplab_platform/platform/../mplab_ide/modules/../../bin/:$(PATH)
+# Path to java used to run MPLAB X when this makefile was created
+MP_JAVA_PATH="C:\Program Files\Microchip\MPLABX\v6.00\sys\java\zulu8.54.0.21-ca-fx-jre8.0.292-win_x64/bin/"
+>>>>>>> 1d091586d5a9913b8d5f1ffa7d22408ec766c3f5
 OS_CURRENT="$(shell uname -s)"
 MP_CC="C:\Program Files\Microchip\xc8\v2.40\bin\xc8-cc.exe"
 # MP_CPPC is not defined
@@ -27,11 +35,20 @@ MP_CC="C:\Program Files\Microchip\xc8\v2.40\bin\xc8-cc.exe"
 MP_AS="C:\Program Files\Microchip\xc8\v2.40\bin\xc8-cc.exe"
 MP_LD="C:\Program Files\Microchip\xc8\v2.40\bin\xc8-cc.exe"
 MP_AR="C:\Program Files\Microchip\xc8\v2.40\bin\xc8-ar.exe"
+<<<<<<< HEAD
 DEP_GEN=${MP_JAVA_PATH}java -jar "C:/Program Files/Microchip/MPLABX/v6.05/mplab_platform/platform/../mplab_ide/modules/../../bin/extractobjectdependencies.jar"
+=======
+DEP_GEN=${MP_JAVA_PATH}java -jar "C:/Program Files/Microchip/MPLABX/v6.00/mplab_platform/platform/../mplab_ide/modules/../../bin/extractobjectdependencies.jar"
+>>>>>>> 1d091586d5a9913b8d5f1ffa7d22408ec766c3f5
 MP_CC_DIR="C:\Program Files\Microchip\xc8\v2.40\bin"
 # MP_CPPC_DIR is not defined
 # MP_BC_DIR is not defined
 MP_AS_DIR="C:\Program Files\Microchip\xc8\v2.40\bin"
 MP_LD_DIR="C:\Program Files\Microchip\xc8\v2.40\bin"
 MP_AR_DIR="C:\Program Files\Microchip\xc8\v2.40\bin"
+<<<<<<< HEAD
 DFP_DIR=C:/Program Files/Microchip/MPLABX/v6.05/packs/Microchip/PIC16Fxxx_DFP/1.3.42
+=======
+# MP_BC_DIR is not defined
+DFP_DIR=C:/Program Files/Microchip/MPLABX/v6.00/packs/Microchip/PIC16Fxxx_DFP/1.3.42
+>>>>>>> 1d091586d5a9913b8d5f1ffa7d22408ec766c3f5

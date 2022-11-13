@@ -15,6 +15,8 @@
 #include "tmr2.h"
 #include "usart.h"
 #include "eeprom.h"
+#include "ccp1.h"
+#include "ccp2.h"
 
 void systemInitialize(void) {
     //OSCInitialize(); Config設定(外付けXtal)のみ
@@ -25,6 +27,8 @@ void systemInitialize(void) {
     TMR2Initialize();
     USARTInitialize();
     EEPROMInitialize();
+    CCP1Initialize();
+    CCP2Initialize();
 }
 
 /*
@@ -37,6 +41,6 @@ void OSCInitialize(void)
 void WDTInitialize(void)
 {
     // Watchdog Timer Time-out Period: min 7msec, typ 18msec, max 33msec
-    OPTION_REGbits.PS = 0x00;
-    OPTION_REGbits.PSA = 0x00; // 8ビットプリスケーラはTMR0に割り当て
+    //OPTION_REGbits.PS = 0x00;
+    OPTION_REGbits.PSA = 0; // 8ビットプリスケーラはTMR0に割り当て
 }

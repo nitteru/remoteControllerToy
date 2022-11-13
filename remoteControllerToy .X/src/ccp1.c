@@ -11,7 +11,8 @@
 
 void CCP1Initialize(void) {
 #if CCP1_MODE == 0x00
-    
+    //CCPR1L = 0x00;
+    //CCPR1H = 0x00;    
 #elif CCP1_MODE == 0x01
     
 #elif CCP1_MODE == 0x02

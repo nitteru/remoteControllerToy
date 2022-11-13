@@ -50,7 +50,7 @@ void __interrupt() interruptHandler(void)
         }
         else if(PIE1bits.TMR1IE == 1 && PIR1bits.TMR1IF == 1)
         {
-            // TMR1
+            // TMR1 (Capture)
             PIR1bits.TMR1IF = 0;
             T1CONbits.TMR1ON = 0;
             TMR1H = RELOAD_TMR1_H;
@@ -62,7 +62,7 @@ void __interrupt() interruptHandler(void)
         }
         else if(PIE1bits.TMR2IE == 1 && PIR1bits.TMR2IF == 1)
         {
-            // TMR2
+            // TMR2 (PWM)
             /*
              * 1周期出力したらRGBの順で電源供給を切り替える
              * 19.53kHzを3回で154usec(6.51kHz)で1周
