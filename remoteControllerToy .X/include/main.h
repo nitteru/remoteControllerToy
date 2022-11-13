@@ -49,70 +49,9 @@
 #define RECEIVE_TIMEOUT_10MSEC (uint8_t)15 // 受信タイムアウト時間 * 10msec
 #define AEHA_TRAILER_TIME (uint8_t)1 // AEHAフォーマット トレイラー時間(8msec以上) * 10msec
 
-/*
- * 受信解析全般
- * 
- * 変調単位と各フィールドの誤差を含めた判定の方法
- * 16bitタイマー TMR1を使用
- * 各フィールド､ビットのtyp幅と誤差範囲を2次元配列に入れて判定
- * → フィールド固定のNECフォーマットには使えそう｡AEHAは可変長フレームなので最後の見つけ方を工夫する?
- * LSBから送信される
- */
-
-/*
- * NECフォーマット解析用
- * 変調
- *   950nm, サブキャリア 38kHz typ 1/3duty
- * Frame
- *   Leader, Customer Code (8bit), Customer Code INV (8bit), Data (8bit), Data INV (8bit), Stop bit (1T)
- * Repeat
- *   16T On, 4T Off, Stop bit (1T)
- * Transmission
- *   FrameとRepeat間は108msec
- * 
- * 変調単位の±30%を読み取る 0.392～0.728msec (±168usec) → TMR1分解能 2usec前後?, 16bitタイマーで125msec前後まで測定可能
- */
-#if 0
-#define NEC_MODULATE_UNIT_T 562 // 変調単位(usec) → タイマー分解能で割る, 下のTもタイマー分解能*値にする
-#define NEC_MODULATE_UNIT_T (uint16_t)280 // 変調単位(usec, TMR1 2usec * Values)
-#define NEC_FRAME_LEADER_ON 16T 
-#define NEC_FRAME_LEADER_OFF 8T 
-#define NEC_FRAME_LEADER_TOTAL 24T // 最長パルス幅 13.488msec
-#define NEC_DATA_ZERO_ON 1T
-#define NEC_DATA_ZERO_OFF 1T
-#define NEC_DATA_ZERO_TOTAL 2T
-#define NEC_DATA_ONE_ON 1T
-#define NEC_DATA_ONE_OFF 3T
-#define NEC_DATA_ONE_TOTAL 4T
-#endif
-
-/*
- * 家製協(AEHA)フォーマット解析用
- * 変調
- *   950nm, サブキャリア 38kHz typ 1/3duty 
- * Frame
- *   Leader, Customer Code (16bit), パリティ カスタマーコードを4bitずつXOR (4bit), Data0 (8bit), Data N (8bit), Stop bit (1T), Trailer
- *   N: 6 (48bit) typ
- *   Trailer 8msec以上の無送信区間?
- * Repeat
- *   8T On, 8T Off, Stop bit (1T)
- * Transmission
- *   FrameとRepeat間は130msec typ (規定はされていない)
- * 
- * 0.425msec±18%(±75usec)を範囲とする?
- */
-#if 0
-#define NEC_MODULATE_UNIT_T 425 // 変調単位 typ(usec) 350～500usec → タイマー分解能で割る, 下のTもタイマー分解能*値にする
-#define NEC_FRAME_LEADER_ON 8T
-#define NEC_FRAME_LEADER_OFF 4T 
-#define NEC_FRAME_LEADER_TOTAL 12T // 最長パルス幅 5.1msec
-#define NEC_DATA_ZERO_ON 1T
-#define NEC_DATA_ZERO_OFF 1T
-#define NEC_DATA_ZERO_TOTAL 2T
-#define NEC_DATA_ONE_ON 1T
-#define NEC_DATA_ONE_OFF 3T
-#define NEC_DATA_ONE_TOTAL 4T
-#endif
+// ステータスLED
+#define STATUS_LED1_ON_TIME (uint8_t)20 // 点灯時間 * 10msec
+#define STATUS_LED1_OFF_TIME (uint8_t)20 // 消灯時間 * 10msec
 
 // インターバルタイマ カウンタ
 typedef union
@@ -183,3 +122,44 @@ extern uint8_t isCaptured;
 extern uint8_t captureTimerOverflow; // キャプチャタイマーOFフラグ
 
 void calIntervalTimer(void);
+
+
+/*
+ * 受信解析全般
+ * 
+ * 変調単位と各フィールドの誤差を含めた判定の方法
+ * 16bitタイマー TMR1を使用
+ * 各フィールド､ビットのtyp幅と誤差範囲を2次元配列に入れて判定
+ * → フィールド固定のNECフォーマットには使えそう｡AEHAは可変長フレームなので最後の見つけ方を工夫する?
+ * LSBから送信される
+ */
+
+/*
+ * NECフォーマット解析用
+ * 変調
+ *   950nm, サブキャリア 38kHz typ 1/3duty
+ * Frame
+ *   Leader, Customer Code (8bit), Customer Code INV (8bit), Data (8bit), Data INV (8bit), Stop bit (1T)
+ * Repeat
+ *   16T On, 4T Off, Stop bit (1T)
+ * Transmission
+ *   FrameとRepeat間は108msec
+ * 
+ * 変調単位の±30%を読み取る 0.392～0.728msec (±168usec) → TMR1分解能 2usec前後?, 16bitタイマーで125msec前後まで測定可能
+ */
+
+/*
+ * 家製協(AEHA)フォーマット解析用
+ * 変調
+ *   950nm, サブキャリア 38kHz typ 1/3duty 
+ * Frame
+ *   Leader, Customer Code (16bit), パリティ カスタマーコードを4bitずつXOR (4bit), Data0 (8bit), Data N (8bit), Stop bit (1T), Trailer
+ *   N: 6 (48bit) typ
+ *   Trailer 8msec以上の無送信区間?
+ * Repeat
+ *   8T On, 8T Off, Stop bit (1T)
+ * Transmission
+ *   FrameとRepeat間は130msec typ (規定はされていない)
+ * 
+ * 0.425msec±18%(±75usec)を範囲とする?
+ */
