@@ -65,6 +65,7 @@ uint8_t foo = 0;
  * 各区間を2usecで割った値で定義していく
  */
 #if 0
+// 誤差範囲が他とかぶる
 const uint16_t tbl[8][2] = {
     {6744, 2032},
     {2550, 765},
@@ -76,6 +77,7 @@ const uint16_t tbl[8][2] = {
     {3400, 1020}
 };
 #else
+// 誤差範囲を狭めた
 const uint16_t tbl[8][2] = {
     {6744, 674},
     {2550, 255},
@@ -411,6 +413,14 @@ void main(void) {
                 if (rcvByteFlag) {
                     // 1バイト受信した
                     rcvByteFlag = 0;
+                    
+                    if (dataFrameCounter > 3)
+                    {
+                        // データを1Byte以上受信したのでタイムアウトを無効化
+                        // 一定時間受信しないのはトレイラーとみなすため
+                        rcvTimeOutEnable = 0;
+                    }
+                    
                     dataFrameBuffer[dataFrameCounter] = rcvByteBuffer;
 
                     if (++dataFrameCounter == DATA_BUFFER_SIZE) {
