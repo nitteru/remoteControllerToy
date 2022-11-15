@@ -162,8 +162,9 @@ void main(void) {
                     }
                     else
                     {
-                        DEBUG_Toggle();
+                        //DEBUG_Toggle();
                     }
+                    //DEBUG_SetLow();
                 }
             }
 
@@ -184,12 +185,12 @@ void main(void) {
             {
                 if(statusLED1Counter == STATUS_LED1_ON_TIME + STATUS_LED1_OFF_TIME)
                 {
-                    LED1_SetHigh();
+                    //LED1_SetHigh();
                     statusLED1Counter--;
                 }
                 else if(statusLED1Counter == STATUS_LED1_OFF_TIME)
                 {
-                    LED1_SetLow();
+                    //LED1_SetLow();
                     statusLED1Counter--;
                 }
                 else if(statusLED1Counter == 0)
@@ -242,10 +243,10 @@ void main(void) {
                 // どの区間に該当するか
                 if (((tbl[0][0] - tbl[0][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[0][0] + tbl[0][1]))) {
                     // NECフォーマットのリーダー
-                    rcvTimeOutEnable = 1;
                     rcvTimeOutFlag = 0;
                     rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
-
+                    rcvTimeOutEnable = 1;
+                    
                     repeatFlag = 0;
                     rcvByteBuffer = 0;
                     rcvShiftCounter = 0;
@@ -259,9 +260,9 @@ void main(void) {
                     nFrame = NODE_NEC_CUSTOMERCODE_L;
                 } else if (((tbl[1][0] - tbl[1][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[1][0] + tbl[1][1]))) {
                     // AEHAフォーマットのリーダー
-                    rcvTimeOutEnable = 1;
                     rcvTimeOutFlag = 0;
                     rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
+                    rcvTimeOutEnable = 1;
 
                     repeatFlag = 0;
                     rcvByteBuffer = 0;
@@ -277,7 +278,7 @@ void main(void) {
                 } else if (((tbl[2][0] - tbl[2][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[2][0] + tbl[2][1]))) {
                     // NEC,AEHAフォーマットの0
                     rcvByteBuffer = (rcvByteBuffer >> rcvShiftCounter);
-                    rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
+                    //rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
                     
                     if (++rcvShiftCounter == 8) {
                         // 1Byte受信
@@ -287,7 +288,7 @@ void main(void) {
                 } else if (((tbl[3][0] - tbl[3][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[3][0] + tbl[3][1]))) {
                     // NEC,AEHAフォーマットの1
                     rcvByteBuffer = (rcvByteBuffer >> rcvShiftCounter) & 0x80;
-                    rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
+                    //rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
                     
                     if (++rcvShiftCounter == 8) {
                         // 1Byte受信
@@ -296,11 +297,11 @@ void main(void) {
                     }
                 } else if (((tbl[6][0] - tbl[6][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[6][0] + tbl[6][1]))) {
                     // NECフォーマットのリピート
-                    rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
+                    //rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
                     repeatFlag = 1;
                 } else if (((tbl[7][0] - tbl[7][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[7][0] + tbl[7][1]))) {
                     // AEHAフォーマットのリピート
-                    rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
+                    //rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
                     repeatFlag = 1;
                 }
             }
@@ -434,9 +435,11 @@ void main(void) {
                 }
                 break;
             case NODE_RECEIVE_COMPLETE_NEC:
+                /*
                 rcvTimeOutEnable = 1;
                 rcvTimeOutFlag = 0;
                 rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
+                */
                 // ここでコマンドに応じた処理を行うか､処理部を外に出す
                 // 受信バイト数: dataFrameCounter - 1
                 // 受信内容: dataFrameBuffer[]
@@ -452,7 +455,7 @@ void main(void) {
                         USART_Write(foo);
                     }
                 }
-#endif
+#endif          
                 // ステータスLED点灯
                 if(!statusLED1Enable)
                 {
@@ -460,12 +463,16 @@ void main(void) {
                     statusLED1Enable = 1;
                 }
                 
+                DEBUG_SetHigh();
+                
                 nFrame = NODE_WAIT_FOR_REPEAT;
                 break;
             case NODE_RECEIVE_COMPLETE_AEHA:
+                /*
                 rcvTimeOutEnable = 1;
                 rcvTimeOutFlag = 0;
                 rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
+                */ 
                 // ここでコマンドに応じた処理を行うか､処理部を外に出す
                 // 受信バイト数: dataFrameCounter - 1
                 // 受信内容: dataFrameBuffer[]
@@ -504,10 +511,11 @@ void main(void) {
                 // 受信タイムアウトで終了
                 if(repeatFlag)
                 {
+                    DEBUG_Toggle();
                     // リピート時の対応
+                    rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
                     rcvTimeOutEnable = 1;
                     rcvTimeOutFlag = 0;
-                    rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
                     
                     // 受信バイト数: dataFrameCounter - 1
                     // 受信内容: dataFrameBuffer[]

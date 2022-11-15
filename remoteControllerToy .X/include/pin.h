@@ -84,7 +84,7 @@
     } while (0)
 
 #if 1
-// デバッグ RB6, TP5
+// デバッグ RD2
 #define DEBUG_SetHigh() \
     do                      \
     {                       \
