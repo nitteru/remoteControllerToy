@@ -24,7 +24,7 @@ void TMR0Initialize(void) {
     */
     OPTION_REGbits.T0CS = 0;
     OPTION_REGbits.T0SE = 1;
-    OPTION_REGbits.PS = 0x03;
+    OPTION_REGbits.PS = 0x07;
     /*
      * Interval (256 - RELOAD_TMR0) * (FOSC / 4)^-1 * prescaler sec
      * exp. 16MHz, プリスケーラ 1:256, REALOD_TMR0 0x00

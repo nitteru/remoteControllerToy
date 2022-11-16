@@ -140,6 +140,8 @@ void main(void) {
         }
 #endif
 
+        rcvTimeOutEnable = 1;
+        
         // 本処理
         // インターバルタイマ処理
         if (intvTmrFlg.fields.flag10msec) {
@@ -155,16 +157,6 @@ void main(void) {
                     //rcvTimeOutFlag = 1;
                     repeatFlag = 0;
                     nFrame = NODE_TIMEOUT;
-                    
-                    if(nFrame == NODE_WAIT_FOR_REPEAT)
-                    {
-                        //DEBUG_Toggle();
-                    }
-                    else
-                    {
-                        //DEBUG_Toggle();
-                    }
-                    //DEBUG_SetLow();
                 }
             }
 
@@ -511,7 +503,7 @@ void main(void) {
                 // 受信タイムアウトで終了
                 if(repeatFlag)
                 {
-                    DEBUG_Toggle();
+                    repeatFlag = 0;
                     // リピート時の対応
                     rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
                     rcvTimeOutEnable = 1;
