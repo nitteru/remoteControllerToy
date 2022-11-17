@@ -37,6 +37,9 @@
  */
 #define DEBUG_PRINT // UART出力
 
+// 動作制御スイッチ
+#define ENABLE_REPEAT // リピートコマンドを認識する
+
 // インターバルタイマ カウンタ上限値 10msec*上限値
 #define INTERVALTIMER_100MSEC (uint8_t)10
 #define INTERVALTIMER_200MSEC (uint8_t)20

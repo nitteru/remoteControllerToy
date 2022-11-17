@@ -43,6 +43,8 @@ uint8_t aehaTrailerEnable = 0; // AEHAトレーラー受信管理
 uint8_t aehaTrailerFlag = 0; // AEHAトレーラー受信フラグ
 uint8_t aehaTrailerCounter = AEHA_TRAILER_TIME; // AEHAトレーラー用カウンタ
 
+uint8_t executeFlag = 0;  // コマンド実行フラグ
+
 uint8_t statusLED1Enable = 0; // ステータスLED点灯フラグ
 uint8_t statusLED1Counter = 0; // ステータスLED管理カウンタ
 
@@ -79,14 +81,14 @@ const uint16_t tbl[8][2] = {
 #else
 // 誤差範囲を狭めた
 const uint16_t tbl[8][2] = {
-    {6744, 674},
-    {2550, 255},
-    {562, 56},
-    {1124, 112},
-    {425, 42},
+    {6744, 674}, // NEC リーダー
+    {2550, 255}, // AEHA リーダー
+    {562, 56}, // 0
+    {1124, 112}, // 1
+    {425, 42}, 
     {850, 85},
-    {5620, 562},
-    {3400, 340}
+    {5620, 562}, // NEC リピート
+    {3400, 340} // AEHA リピート
 };
 #endif
 
@@ -244,6 +246,7 @@ void main(void) {
                     rcvShiftCounter = 0;
                     rcvByteFlag = 0;
                     dataFrameCounter = 0;
+                    executeFlag = 0;
 
                     for (uint8_t i = 0; i < DATA_BUFFER_SIZE; i++) {
                         dataFrameBuffer[i] = 0x00;
@@ -261,6 +264,7 @@ void main(void) {
                     rcvShiftCounter = 0;
                     rcvByteFlag = 0;
                     dataFrameCounter = 0;
+                    executeFlag = 0;
 
                     for (uint8_t i = 0; i < DATA_BUFFER_SIZE; i++) {
                         dataFrameBuffer[i] = 0x00;
@@ -269,7 +273,7 @@ void main(void) {
                     nFrame = NODE_AEHA_CUSTOMERCODE_L;
                 } else if (((tbl[2][0] - tbl[2][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[2][0] + tbl[2][1]))) {
                     // NEC,AEHAフォーマットの0
-                    rcvByteBuffer = (rcvByteBuffer >> rcvShiftCounter);
+                    rcvByteBuffer = (rcvByteBuffer >> 1);
                     //rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
                     
                     if (++rcvShiftCounter == 8) {
@@ -279,7 +283,7 @@ void main(void) {
                     }
                 } else if (((tbl[3][0] - tbl[3][1]) < edgeCaptureValue) && (edgeCaptureValue < (tbl[3][0] + tbl[3][1]))) {
                     // NEC,AEHAフォーマットの1
-                    rcvByteBuffer = (rcvByteBuffer >> rcvShiftCounter) & 0x80;
+                    rcvByteBuffer = (rcvByteBuffer >> 1) | 0x80;
                     //rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;
                     
                     if (++rcvShiftCounter == 8) {
@@ -434,30 +438,25 @@ void main(void) {
                 */
                 // ここでコマンドに応じた処理を行うか､処理部を外に出す
                 // 受信バイト数: dataFrameCounter - 1
-                // 受信内容: dataFrameBuffer[]
+                // 受信内容: dataFrameBuffer[]              
+                executeFlag = 1;
                 
-                // とりあえずUARTに出力
-#ifdef DEBUG_PRINT
-                // デバッグ用出力
-                for(uint8_t i = 0; i < (dataFrameCounter - 1); i++)
-                {
-                    foo = dataFrameBuffer[i];
-                    if (USART_is_tx_ready())
-                    {
-                        USART_Write(foo);
-                    }
-                }
-#endif          
+#if defined ENABLE_REPEAT                                
+                nFrame = NODE_WAIT_FOR_REPEAT;
+#else
+                rcvTimeOutEnable = 0;
+                rcvTimeOutFlag = 0;
+                rcvTimeOutCounter = RECEIVE_TIMEOUT_10MSEC;                
+                nFrame = NODE_WAIT;
+#endif
+                
                 // ステータスLED点灯
                 if(!statusLED1Enable)
                 {
                     statusLED1Counter = STATUS_LED1_ON_TIME + STATUS_LED1_OFF_TIME;
                     statusLED1Enable = 1;
                 }
-                
-                DEBUG_SetHigh();
-                
-                nFrame = NODE_WAIT_FOR_REPEAT;
+               
                 break;
             case NODE_RECEIVE_COMPLETE_AEHA:
                 /*
@@ -469,18 +468,8 @@ void main(void) {
                 // 受信バイト数: dataFrameCounter - 1
                 // 受信内容: dataFrameBuffer[]
                 
-                // とりあえずUARTに出力
-#ifdef DEBUG_PRINT
-                // デバッグ用出力
-                for(uint8_t i = 0; i < (dataFrameCounter - 1); i++)
-                {
-                    foo = dataFrameBuffer[i];
-                    if (USART_is_tx_ready())
-                    {
-                        USART_Write(foo);
-                    }
-                }
-#endif
+                executeFlag  = 1;
+                
                 nFrame = NODE_WAIT_FOR_REPEAT;
                 break;
             case NODE_TIMEOUT:
@@ -511,10 +500,39 @@ void main(void) {
                     
                     // 受信バイト数: dataFrameCounter - 1
                     // 受信内容: dataFrameBuffer[]
+                    executeFlag = 1;
                 }
                 break;
             default:
                 break;
+        }
+        
+        // 受信内容に応じた処理を実行
+        if(executeFlag)
+        {
+            executeFlag = 0;
+
+            // とりあえずUARTに出力
+#ifdef DEBUG_PRINT
+            // デバッグ用出力
+            for(uint8_t i = 0; i < (dataFrameCounter - 1); i++)
+            {
+                foo = dataFrameBuffer[i];
+                if (USART_is_tx_ready())
+                {
+                    USART_Write(foo);
+                }
+            }
+#endif          
+
+            // 実行完了したので受信内容を初期化
+            dataFrameCounter = 0;
+            for (uint8_t i = 0; i < DATA_BUFFER_SIZE; i++) {
+                dataFrameBuffer[i] = 0x00;
+            }
+
+            nFrame = NODE_WAIT;
+            
         }
     }
 }
