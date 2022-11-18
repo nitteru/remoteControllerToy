@@ -107,6 +107,9 @@ void main(void) {
     enableGlobalInterrupt();
     enablePeripheralInterrupt();
 
+    CCP1PWMStart();
+    CCP1PWMSetDuty(0x01FF);
+    
     while (1) {
         CLRWDT();
 #if 0

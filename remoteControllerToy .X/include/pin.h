@@ -83,6 +83,150 @@
         ANSELBbits.ANSD2 = 0;      \
     } while (0)
 
+// LED R
+#define LED_R_SetHigh() \
+    do                      \
+    {                       \
+        PORTDbits.RD7 = 1; \
+    } while (0)
+#define LED_R_SetLow()  \
+    do                      \
+    {                       \
+        PORTDbits.RD7 = 0; \
+    } while (0)
+#define LED_R_Toggle()                \
+    do                                    \
+    {                                     \
+        PORTDbits.RD7 = ~PORTDbits.RD7; \
+    } while (0)
+#define LED_R_getValue() PORTBbits.RD7
+#define LED_R_SetDigitalInput() \
+    do                              \
+    {                               \
+        TRISBbits.TRISD7 = 1;       \
+    } while (0)
+#define LED_R_SetDigitalOutput() \
+    do                               \
+    {                                \
+        TRISBbits.TRISD7 = 0;        \
+    } while (0)
+#define LED_R_SetPullup() \
+    do                        \
+    {                         \
+        WPUBbits.WPUD7 = 1;   \
+    } while (0)
+#define LED_R_ResetPullup() \
+    do                          \
+    {                           \
+        WPUBbits.WPUD7 = 0;     \
+    } while (0)
+#define LED_R_SetAnalogMode() \
+    do                            \
+    {                             \
+        ANSELBbits.ANSD7 = 1;     \
+    } while (0)
+#define LED_R_SetDigitalMode() \
+    do                             \
+    {                              \
+        ANSELBbits.ANSD7 = 0;      \
+    } while (0)
+
+// LED G
+#define LED_G_SetHigh() \
+    do                      \
+    {                       \
+        PORTDbits.RD6 = 1; \
+    } while (0)
+#define LED_G_SetLow()  \
+    do                      \
+    {                       \
+        PORTDbits.RD6 = 0; \
+    } while (0)
+#define LED_G_Toggle()                \
+    do                                    \
+    {                                     \
+        PORTDbits.RD6 = ~PORTDbits.RD6; \
+    } while (0)
+#define LED_G_getValue() PORTBbits.RD6
+#define LED_G_SetDigitalInput() \
+    do                              \
+    {                               \
+        TRISBbits.TRISD6 = 1;       \
+    } while (0)
+#define LED_G_SetDigitalOutput() \
+    do                               \
+    {                                \
+        TRISBbits.TRISD6 = 0;        \
+    } while (0)
+#define LED_G_SetPullup() \
+    do                        \
+    {                         \
+        WPUBbits.WPUD6 = 1;   \
+    } while (0)
+#define LED_G_ResetPullup() \
+    do                          \
+    {                           \
+        WPUBbits.WPUD6 = 0;     \
+    } while (0)
+#define LED_G_SetAnalogMode() \
+    do                            \
+    {                             \
+        ANSELBbits.ANSD6 = 1;     \
+    } while (0)
+#define LED_G_SetDigitalMode() \
+    do                             \
+    {                              \
+        ANSELBbits.ANSD6 = 0;      \
+    } while (0)
+
+// LED G
+#define LED_B_SetHigh() \
+    do                      \
+    {                       \
+        PORTDbits.RD5 = 1; \
+    } while (0)
+#define LED_B_SetLow()  \
+    do                      \
+    {                       \
+        PORTDbits.RD5 = 0; \
+    } while (0)
+#define LED_B_Toggle()                \
+    do                                    \
+    {                                     \
+        PORTDbits.RD5 = ~PORTDbits.RD5; \
+    } while (0)
+#define LED_B_getValue() PORTBbits.RD5
+#define LED_B_SetDigitalInput() \
+    do                              \
+    {                               \
+        TRISBbits.TRISD5 = 1;       \
+    } while (0)
+#define LED_B_SetDigitalOutput() \
+    do                               \
+    {                                \
+        TRISBbits.TRISD5 = 0;        \
+    } while (0)
+#define LED_B_SetPullup() \
+    do                        \
+    {                         \
+        WPUBbits.WPUD5 = 1;   \
+    } while (0)
+#define LED_B_ResetPullup() \
+    do                          \
+    {                           \
+        WPUBbits.WPUD5 = 0;     \
+    } while (0)
+#define LED_B_SetAnalogMode() \
+    do                            \
+    {                             \
+        ANSELBbits.ANSD5 = 1;     \
+    } while (0)
+#define LED_B_SetDigitalMode() \
+    do                             \
+    {                              \
+        ANSELBbits.ANSD5 = 0;      \
+    } while (0)
+
 #if 1
 // デバッグ RD2
 #define DEBUG_SetHigh() \

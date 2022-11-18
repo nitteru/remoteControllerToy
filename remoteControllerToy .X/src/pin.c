@@ -25,7 +25,7 @@ void PinInitialize(void) {
 
     // PORTD [7:0]
     PORTD = 0b00000000; // Output Cleared
-    TRISD = 0b00000000; // All Output
+    TRISD = 0b00000000; // All Output, RD7:LED R, RD6:LED G, RD5 LED B
 
     // PORTE [2:0]
     PORTE = 0b00000000; // Output Cleared
