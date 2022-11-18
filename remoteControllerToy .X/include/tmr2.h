@@ -57,6 +57,9 @@
 #define RELOAD_TMR2 (uint8_t)0x00
 #define RELOAD_PR2 (uint8_t)0xFF
 
+#define TMR2InterruptEnable() (PIE1bits.TMR2IE = 0x01)
+#define TMR2InterruptDisable() (PIE1bits.TMR2IE = 0x00)
+#define TMR2InterruptFlagClear() (PIR1bits.TMR2IF = 0x00)
 
 void TMR2Initialize(void);
 void TMR2Start(void);

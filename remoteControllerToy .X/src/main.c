@@ -45,8 +45,19 @@ uint8_t aehaTrailerCounter = AEHA_TRAILER_TIME; // AEHAトレーラー用カウ�
 
 uint8_t executeFlag = 0;  // コマンド実行フラグ
 
+enum ledColorStatus ledColorSts = LED_R; // LED点灯順制御
+// PWM デューティ (TMR2割込みに同期して反映)
+uint16_t pwmDutyLED_R = 0x0000; // PWMデューティ LED R
+uint16_t pwmDutyLED_G = 0x0000; // PWMデューティ LED G
+uint16_t pwmDutyLED_B = 0x0000; // PWMデューティ LED B
+
 uint8_t statusLED1Enable = 0; // ステータスLED点灯フラグ
 uint8_t statusLED1Counter = 0; // ステータスLED管理カウンタ
+
+#if defined DEBUG_RGBLED
+enum changeColorMode ccMode = STOP;
+uint8_t pwmDutyDemo = 0;     // PWMデューティ計算用
+#endif
 
 #ifdef DEBUG_PRINT
 uint8_t foo = 0;
@@ -103,13 +114,28 @@ void main(void) {
     for (uint8_t i = 0; i < 6; i++) {
         intvTmrCnt.A[i] = 0; // カウンタ初期化
     }
+    
+    // LEDをすべて消灯
+    LED_R_SetHigh();
+    LED_G_SetHigh();
+    LED_B_SetHigh();
+    
+    // TMR2割込みを有効化
+    TMR2InterruptEnable();
 
     enableGlobalInterrupt();
     enablePeripheralInterrupt();
 
+    // PWMテスト
+    LED_R_SetLow();
     CCP1PWMStart();
-    CCP1PWMSetDuty(0x01FF);
-    
+    pwmDutyLED_R = 0x03FF;
+    pwmDutyLED_G = 0x000F;
+    pwmDutyLED_B = 0x000F;
+#if defined DEBUG_RGBLED
+    ccMode = GREEN_INCREMENT;
+    CCP1PWMSetDuty(1000);
+#endif
     while (1) {
         CLRWDT();
 #if 0
@@ -207,6 +233,81 @@ void main(void) {
 
         if (intvTmrFlg.fields.flag200msec) {
             intvTmrFlg.fields.flag200msec = 0;
+#if defined DEBUG_RGBLED
+            // PWM Dutyが10bitのため本来の8bit(DMX512を想定)を約4倍する
+            // 192usec (5.2.089kHz)ごとに更新される
+            switch (ccMode)
+            {
+            case GREEN_INCREMENT:
+                pwmDutyLED_R = 1000;
+                pwmDutyLED_G = (uint16_t)pwmDutyDemo << 2;
+                pwmDutyLED_B = 0;
+                
+                pwmDutyDemo += COLOR_STEP;
+                if (pwmDutyDemo == 250)
+                {
+                    ccMode = RED_DECREMENT;
+                }
+                break;
+            case RED_DECREMENT:
+                pwmDutyLED_R = (uint16_t)pwmDutyDemo << 2;
+                pwmDutyLED_G = 1000;
+                pwmDutyLED_B = 0;
+
+                pwmDutyDemo -= COLOR_STEP;
+                if (pwmDutyDemo == 0)
+                {
+                    ccMode = BLUE_INCREMENT;
+                }
+                break;
+            case BLUE_INCREMENT:
+                pwmDutyLED_R = 0;
+                pwmDutyLED_G = 1000;
+                pwmDutyLED_B = (uint16_t)pwmDutyDemo << 2;
+
+                pwmDutyDemo += COLOR_STEP;
+                if (pwmDutyDemo == 250)
+                {
+                    ccMode = GREEN_DECREMENT;
+                }
+                break;
+            case GREEN_DECREMENT:
+                pwmDutyLED_R = 0;
+                pwmDutyLED_G = (uint16_t)pwmDutyDemo << 2;
+                pwmDutyLED_B = 1000;
+
+                pwmDutyDemo -= COLOR_STEP;
+                if (pwmDutyDemo == 0)
+                {
+                    ccMode = RED_INCREMENT;
+                }
+                break;
+            case RED_INCREMENT:
+                pwmDutyLED_R = (uint16_t)pwmDutyDemo << 2;
+                pwmDutyLED_G = 0;
+                pwmDutyLED_B = 1000;
+
+                pwmDutyDemo += COLOR_STEP;
+                if (pwmDutyDemo == 250)
+                {
+                    ccMode = BLUE_DECREMENT;
+                }
+                break;
+            case BLUE_DECREMENT:
+                pwmDutyLED_R = 1000;
+                pwmDutyLED_G = 0;
+                pwmDutyLED_B = (uint16_t)pwmDutyDemo << 2;
+
+                pwmDutyDemo -= COLOR_STEP;
+                if (pwmDutyDemo == 0)
+                {
+                    ccMode = GREEN_INCREMENT;
+                }
+                break;
+            default:
+                break;
+            }
+#endif
         }
 
         if (intvTmrFlg.fields.flag500msec) {

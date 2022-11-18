@@ -11,6 +11,7 @@
 #include "main.h"
 #include "tmr0.h"
 #include "tmr1.h"
+#include "pin.h"
 
 void __interrupt() interruptHandler(void)
 {
@@ -63,15 +64,57 @@ void __interrupt() interruptHandler(void)
         else if(PIE1bits.TMR2IE == 1 && PIR1bits.TMR2IF == 1)
         {
             // TMR2 (PWM)
+            PIR1bits.TMR2IF = 0;
             /*
              * 1周期出力したらRGBの順で電源供給を切り替える
-             * 19.53kHzを3回で154usec(6.51kHz)で1周
+             * 15.625kHzを3回で192usec(5.2089kHz)で1周
              */
+            if(ledColorSts == LED_R)
+            {
+                PORTD = 0b01100000;
+                
+                // 次回割り込み時に更新するため準備しておく
+                pwmDutyLED_G = pwmDutyLED_G & 0x03FF;
+                CCP1CONbits.CCP1X = (uint8_t)((pwmDutyLED_G >> 1) & 0x01);
+                CCP1CONbits.CCP1Y = (uint8_t)(pwmDutyLED_G & 0x01);
+                CCPR1L = (uint8_t)(pwmDutyLED_G >> 2);
+                
+                ledColorSts = LED_G;
+            }
+            else if(ledColorSts == LED_G)
+            {
+                PORTD = 0b10100000;
+
+                // 次回割り込み時に更新するため準備しておく
+                pwmDutyLED_B = pwmDutyLED_B & 0x03FF;
+                CCP1CONbits.CCP1X = (uint8_t)((pwmDutyLED_B >> 1) & 0x01);
+                CCP1CONbits.CCP1Y = (uint8_t)(pwmDutyLED_B & 0x01);
+                CCPR1L = (uint8_t)(pwmDutyLED_B >> 2);
+                
+                ledColorSts = LED_B;
+            }
+            else if(ledColorSts == LED_B)
+            {
+                PORTD = 0b11000000;
+                
+                // 次回割り込み時に更新するため準備しておく
+                pwmDutyLED_R = pwmDutyLED_R & 0x03FF;
+                CCP1CONbits.CCP1X = (uint8_t)((pwmDutyLED_R >> 1) & 0x01);
+                CCP1CONbits.CCP1Y = (uint8_t)(pwmDutyLED_R & 0x01);
+                CCPR1L = (uint8_t)(pwmDutyLED_R >> 2);
+
+                ledColorSts = LED_R;
+            }
         }
         else if(PIE2bits.EEIE == 1 && PIR2bits.EEIF == 1)
         {
             // EEPROM Write
             PIR2bits.EEIF = 0;
+        }
+        else if(PIE1bits.CCP1IE == 1 && PIR1bits.CCP1IF == 1)
+        {
+            // CCP1
+            PIR1bits.CCP1IF = 0;
         }
         else if(PIE2bits.CCP2IE == 1 && PIR2bits.CCP2IF == 1)
         {

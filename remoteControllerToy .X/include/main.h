@@ -36,6 +36,7 @@
  * デバッグ用スイッチ
  */
 #define DEBUG_PRINT // UART出力
+//#define DEBUG_RGBLED // RGB LEDデモ
 
 // 動作制御スイッチ
 #define ENABLE_REPEAT // リピートコマンドを認識する
@@ -119,10 +120,37 @@ enum receiveData
     AEHA_LEADER, // AEHAフォーマットリーダー
 };
 
+// RGB LED点灯順制御
+enum ledColorStatus
+{
+    LED_R, // LED R点灯
+    LED_G, // LED G点灯
+    LED_B // LED B点灯
+};
+
+#if defined DEBUG_RGBLED
+#define COLOR_STEP (uint8_t)25 // RGB 0-255(PWMDuty 0-1023)のステップ数/200msec
+enum changeColorMode
+{
+    // 初期状態は赤250点灯とする
+    STOP,            // 演出停止
+    GREEN_INCREMENT, // 緑のインクリメント → 黄色へ
+    RED_DECREMENT,   // 赤のデクリメント → 緑へ
+    BLUE_INCREMENT,  // 青のインクリメント → 水色へ
+    GREEN_DECREMENT, // 緑のデクリメント → 青へ
+    RED_INCREMENT,   // 赤のインクリメント → 紫へ
+    BLUE_DECREMENT   // 青のデクリメント → 赤(初期状態)へ
+};
+#endif
+
 extern intervalTimerFlags intvTmrFlg; // インターバルタイマフラグ
 extern uint16_t edgeCaptureValue; // キャプチャした値
 extern uint8_t isCaptured;
 extern uint8_t captureTimerOverflow; // キャプチャタイマーOFフラグ
+extern enum ledColorStatus ledColorSts;
+extern uint16_t pwmDutyLED_R;
+extern uint16_t pwmDutyLED_G;
+extern uint16_t pwmDutyLED_B;
 
 void calIntervalTimer(void);
 

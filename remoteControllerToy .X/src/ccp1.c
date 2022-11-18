@@ -26,6 +26,8 @@ void CCP1Initialize(void) {
     
     CCPR1L = 0x00;
     CCPR1H = 0x00;
+    
+    PIE1bits.CCP1IE = 0; // PWMモード時は割込みは入らないが念のため
 #endif
 }
 
