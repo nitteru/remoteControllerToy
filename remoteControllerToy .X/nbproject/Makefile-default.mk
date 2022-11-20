@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=src/eeprom.c src/init.c src/interrupt.c src/main.c src/pin.c src/tmr0.c src/tmr1.c src/tmr2.c src/usart.c src/ccp1.c src/ccp2.c
+SOURCEFILES_QUOTED_IF_SPACED=src/eeprom.c src/init.c src/interrupt.c src/main.c src/pin.c src/tmr0.c src/tmr1.c src/tmr2.c src/usart.c src/ccp1.c src/ccp2.c src/DFR0299.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/src/eeprom.p1 ${OBJECTDIR}/src/init.p1 ${OBJECTDIR}/src/interrupt.p1 ${OBJECTDIR}/src/main.p1 ${OBJECTDIR}/src/pin.p1 ${OBJECTDIR}/src/tmr0.p1 ${OBJECTDIR}/src/tmr1.p1 ${OBJECTDIR}/src/tmr2.p1 ${OBJECTDIR}/src/usart.p1 ${OBJECTDIR}/src/ccp1.p1 ${OBJECTDIR}/src/ccp2.p1
-POSSIBLE_DEPFILES=${OBJECTDIR}/src/eeprom.p1.d ${OBJECTDIR}/src/init.p1.d ${OBJECTDIR}/src/interrupt.p1.d ${OBJECTDIR}/src/main.p1.d ${OBJECTDIR}/src/pin.p1.d ${OBJECTDIR}/src/tmr0.p1.d ${OBJECTDIR}/src/tmr1.p1.d ${OBJECTDIR}/src/tmr2.p1.d ${OBJECTDIR}/src/usart.p1.d ${OBJECTDIR}/src/ccp1.p1.d ${OBJECTDIR}/src/ccp2.p1.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/src/eeprom.p1 ${OBJECTDIR}/src/init.p1 ${OBJECTDIR}/src/interrupt.p1 ${OBJECTDIR}/src/main.p1 ${OBJECTDIR}/src/pin.p1 ${OBJECTDIR}/src/tmr0.p1 ${OBJECTDIR}/src/tmr1.p1 ${OBJECTDIR}/src/tmr2.p1 ${OBJECTDIR}/src/usart.p1 ${OBJECTDIR}/src/ccp1.p1 ${OBJECTDIR}/src/ccp2.p1 ${OBJECTDIR}/src/DFR0299.p1
+POSSIBLE_DEPFILES=${OBJECTDIR}/src/eeprom.p1.d ${OBJECTDIR}/src/init.p1.d ${OBJECTDIR}/src/interrupt.p1.d ${OBJECTDIR}/src/main.p1.d ${OBJECTDIR}/src/pin.p1.d ${OBJECTDIR}/src/tmr0.p1.d ${OBJECTDIR}/src/tmr1.p1.d ${OBJECTDIR}/src/tmr2.p1.d ${OBJECTDIR}/src/usart.p1.d ${OBJECTDIR}/src/ccp1.p1.d ${OBJECTDIR}/src/ccp2.p1.d ${OBJECTDIR}/src/DFR0299.p1.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/src/eeprom.p1 ${OBJECTDIR}/src/init.p1 ${OBJECTDIR}/src/interrupt.p1 ${OBJECTDIR}/src/main.p1 ${OBJECTDIR}/src/pin.p1 ${OBJECTDIR}/src/tmr0.p1 ${OBJECTDIR}/src/tmr1.p1 ${OBJECTDIR}/src/tmr2.p1 ${OBJECTDIR}/src/usart.p1 ${OBJECTDIR}/src/ccp1.p1 ${OBJECTDIR}/src/ccp2.p1
+OBJECTFILES=${OBJECTDIR}/src/eeprom.p1 ${OBJECTDIR}/src/init.p1 ${OBJECTDIR}/src/interrupt.p1 ${OBJECTDIR}/src/main.p1 ${OBJECTDIR}/src/pin.p1 ${OBJECTDIR}/src/tmr0.p1 ${OBJECTDIR}/src/tmr1.p1 ${OBJECTDIR}/src/tmr2.p1 ${OBJECTDIR}/src/usart.p1 ${OBJECTDIR}/src/ccp1.p1 ${OBJECTDIR}/src/ccp2.p1 ${OBJECTDIR}/src/DFR0299.p1
 
 # Source Files
-SOURCEFILES=src/eeprom.c src/init.c src/interrupt.c src/main.c src/pin.c src/tmr0.c src/tmr1.c src/tmr2.c src/usart.c src/ccp1.c src/ccp2.c
+SOURCEFILES=src/eeprom.c src/init.c src/interrupt.c src/main.c src/pin.c src/tmr0.c src/tmr1.c src/tmr2.c src/usart.c src/ccp1.c src/ccp2.c src/DFR0299.c
 
 
 
@@ -176,6 +176,14 @@ ${OBJECTDIR}/src/ccp2.p1: src/ccp2.c  nbproject/Makefile-${CND_CONF}.mk
 	@-${MV} ${OBJECTDIR}/src/ccp2.d ${OBJECTDIR}/src/ccp2.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/src/ccp2.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
+${OBJECTDIR}/src/DFR0299.p1: src/DFR0299.c  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}/src" 
+	@${RM} ${OBJECTDIR}/src/DFR0299.p1.d 
+	@${RM} ${OBJECTDIR}/src/DFR0299.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -mdebugger=icd3   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -I"include" -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/src/DFR0299.p1 src/DFR0299.c 
+	@-${MV} ${OBJECTDIR}/src/DFR0299.d ${OBJECTDIR}/src/DFR0299.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/src/DFR0299.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
 else
 ${OBJECTDIR}/src/eeprom.p1: src/eeprom.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}/src" 
@@ -264,6 +272,14 @@ ${OBJECTDIR}/src/ccp2.p1: src/ccp2.c  nbproject/Makefile-${CND_CONF}.mk
 	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -I"include" -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/src/ccp2.p1 src/ccp2.c 
 	@-${MV} ${OBJECTDIR}/src/ccp2.d ${OBJECTDIR}/src/ccp2.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/src/ccp2.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	
+${OBJECTDIR}/src/DFR0299.p1: src/DFR0299.c  nbproject/Makefile-${CND_CONF}.mk 
+	@${MKDIR} "${OBJECTDIR}/src" 
+	@${RM} ${OBJECTDIR}/src/DFR0299.p1.d 
+	@${RM} ${OBJECTDIR}/src/DFR0299.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -O0 -fasmfile -maddrqual=ignore -xassembler-with-cpp -I"include" -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-osccal -mno-resetbits -mno-save-resetbits -mno-download -mno-stackcall -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto     -o ${OBJECTDIR}/src/DFR0299.p1 src/DFR0299.c 
+	@-${MV} ${OBJECTDIR}/src/DFR0299.d ${OBJECTDIR}/src/DFR0299.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/src/DFR0299.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 endif
 

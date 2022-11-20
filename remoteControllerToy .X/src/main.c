@@ -126,12 +126,14 @@ void main(void) {
     enableGlobalInterrupt();
     enablePeripheralInterrupt();
 
+/*
     // PWMテスト
     LED_R_SetLow();
     CCP1PWMStart();
     pwmDutyLED_R = 0x03FF;
     pwmDutyLED_G = 0x000F;
     pwmDutyLED_B = 0x000F;
+*/
 #if defined DEBUG_RGBLED
     ccMode = GREEN_INCREMENT;
     CCP1PWMSetDuty(1000);

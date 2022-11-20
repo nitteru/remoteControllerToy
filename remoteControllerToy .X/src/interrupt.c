@@ -68,6 +68,9 @@ void __interrupt() interruptHandler(void)
             /*
              * 1周期出力したらRGBの順で電源供給を切り替える
              * 15.625kHzを3回で192usec(5.2089kHz)で1周
+             * 
+             * 割り込みが間に合わず色が交じるので他の方法を検討する
+             * PWM調光しなければインターバルタイマーで切り替えられる
              */
             if(ledColorSts == LED_R)
             {
