@@ -9,6 +9,11 @@
 #include <xc.h>
 #include "DFR0299.h"
 
+void DFR0299Initialize(void)
+{
+    // 初期設定
+}
+
 void makeChecksum(void)
 {
     // チェックサム生成
