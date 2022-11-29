@@ -52,6 +52,26 @@
 #define DFPM_CMD_VOLUME_AJUST_SET (uint8_t)0x10 // ボリュームアジャスト DH:1 Open volume ajust, DL: volume gain 0-31
 #define DFPM_CMD_REPEAT_PLAY (uint8_t)0x11 // リピート再生 0:Stop play, 1:Start repeat play
 
+// クエリ
+#define DFP_QUERY_FINISH_PLAYBACK_UDISK (uint8_t)0x3C // 1曲再生終了 USBディスク
+#define DFP_QUERY_FINISH_PLAYBACK_TFCARD (uint8_t)0x3D // 1曲再生終了 TFカード
+#define DFP_QUERY_FINISH_PLAYBACK_FLASH (uint8_t)0x3E // 1曲再生終了 内蔵フラッシュ
+#define DFPM_QUERY_INITIALIZED (uint8_t)0x3F // 初期化
+#define DFPM_QUERY_ROR (uint8_t)0x40 // エラー
+
+/*
+ * パラメータ
+ * 上位4ビットと下位4ビットをPara_MSB, Para_LSBに分割して使用する
+ */
+// 0x3F(電源投入･初期化)コマンド パラメータ
+#define DFPM_PARA_NO_TFCARD (uint8_t)0x00 // TFカード未挿入
+#define DFPM_PARA_UDISK_ONLINE (uint8_t)0x01 // USBディスクオンライン
+#define DFPM_PARA_TFCARD_ONLINE (uint8_t)0x02 // TFカードオンライン
+#define DFPM_PARA_UDISK_TFCARD_ONLINE (uint8_t)0x03 // USBディスクとTFカード両方オンライン
+#define DFPM_PARA_PC_ONLINE (uint8_t)0x04 // PCオンライン
+#define DFPM_PARA_FLASH_ONLINE (uint8_t)0x08 // 内蔵フラッシュオンライン
+
+
 typedef union
 {
     struct
