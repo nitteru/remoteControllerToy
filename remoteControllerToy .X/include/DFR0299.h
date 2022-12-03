@@ -71,6 +71,33 @@
 #define DFPM_PARA_PC_ONLINE (uint8_t)0x04 // PCオンライン
 #define DFPM_PARA_FLASH_ONLINE (uint8_t)0x08 // 内蔵フラッシュオンライン
 
+#define DFPM_PARA_MODULE_BUSY (uint8_t)0x01 // モジュールビジーまたは初期化未完了
+#define DFPM_PARA_IN_SLEEP (uint8_t)0x02 // スリープ中
+#define DFPM_PARA_SERIAL_ERROR (uint8_t)0x03 // シリアルエラー(未受信フレーム)
+#define DFPM_PARA_CHECKSUM_ERROR (uint8_t)0x04 // チェックサムエラー
+#define DFPM_PARA_FILE_RANGE_ERROR (uint8_t)0x05 // ファイル指定が範囲外
+#define DFPM_PARA_NO_FILE_ERROR (uint8_t)0x06 // ファイルが見つからない
+#define DFPM_PARA_ADVERTISE_ERROR (uint8_t)0x07 // コマンド宣伝エラー
+#define DFPM_PARA_TFCARD_ERROR (uint8_t)0x08 // TFカードエラー
+#define DFPM_PARA_SLEEP (uint8_t)0x0A // スリープに入った
+#define DFPM_PARA_UDISK (uint8_t)0x01 // USBディスク
+#define DFPM_PARA_TFCARD (uint8_t)0x02 // TFカード
+#define DFPM_PARA_PC_SERIAL (uint8_t)0x04 // PCシリアル接続
+
+#define DFPM_PARA_EQ_NORMAL (uint8_t)0x00 // EQ設定 ノーマル
+#define DFPM_PARA_EQ_POP (uint8_t)0x01 // EQ設定 POP
+#define DFPM_PARA_EQ_ROCK (uint8_t)0x02 // EQ設定 ROCK
+#define DFPM_PARA_EQ_JAZZ (uint8_t)0x03 // EQ設定 JAZZ
+#define DFPM_PARA_EQ_CLASSIC (uint8_t)0x04 // EQ設定 CLASSIC
+#define DFPM_PARA_EQ_BASE (uint8_t)0x05 // EQ設定 BASE
+
+#define DFPM_PARA_PLAYBACK_REPEAT (uint8_t)0x00 // 全リピート
+#define DFPM_PARA_PLAYBACK_FOLDER_REPEAT (uint8_t)0x01 // フォルダーリピート
+#define DFPM_PARA_PLAYBACK_SINGLE_REPEAT (uint8_t)0x02 // 単曲リピート
+#define DFPM_PARA_PLAYBACK_RANDOM (uint8_t)0x03 // ランダム
+
+#define DFPM_PARA_REPEAT_PLAY (uint8_t)0x01 // リピートプレイ
+#define DFPM_PARA_STOP_PLAY (uint8_t)0x00 // 再生停止
 
 typedef union
 {
@@ -90,6 +117,6 @@ typedef union
     };
     uint8_t A[9]; // 一括アクセス用
 } DFPMInstrution;
-\
-void DFR0299Initialize(void); // 初期設定
-void makeChecksum(void); // チェックサム生成
+
+uint8_t DFR0299Initialize(void); // 初期設定
+void makeChecksum(uint8_t *, uint8_t *, uint8_t *, uint8_t); // チェックサム生成

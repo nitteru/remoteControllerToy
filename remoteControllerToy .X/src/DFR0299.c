@@ -9,7 +9,7 @@
 #include <xc.h>
 #include "DFR0299.h"
 
-void DFR0299Initialize(void)
+uint8_t DFR0299Initialize(void)
 {
     // 初期設定
     /*
@@ -19,10 +19,23 @@ void DFR0299Initialize(void)
      * どちらにしろ一定時間内(100-1500msec)に返信がなければエラー
      * UARTの受信があるのでその処理をどう分割するか?
      */
+    
+    return 0;
 }
 
-void makeChecksum(void)
+void makeChecksum(uint8_t *cmd, uint8_t *checkMSB, uint8_t *checkLSB, uint8_t index)
 {
     // チェックサム生成
-    // 返り値､引数は別途検討
+    uint16_t sum = 0x0000, ret = 0x0000;
+    
+    // indexはPara_LSBまで
+    for(uint8_t i = 1; i < index; i++)
+    {
+        sum += cmd[i];
+    }
+    
+    ret = 0xFFFF - sum + 1;
+    
+    *checkMSB = (uint8_t)(ret >> 8);
+    *checkLSB = (uint8_t)(ret & 0x00FF);
 }
