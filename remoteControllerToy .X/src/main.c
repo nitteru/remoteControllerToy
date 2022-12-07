@@ -19,6 +19,8 @@
 #include "tmr2.h"
 #include "ccp1.h"
 
+#include "irc.h"
+
 intervalTimerCounters intvTmrCnt;
 intervalTimerFlags intvTmrFlg;
 

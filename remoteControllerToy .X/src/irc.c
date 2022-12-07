@@ -1,0 +1,22 @@
+/*
+ * File:   irc.c
+ * Author: Teruyuki
+ *
+ * Created on 2022/12/07, 12:47
+ */
+
+
+#include <xc.h>
+#include "irc.h"
+
+// ボタンに対応するコマンドバイト列
+const uint8_t ircButtonCh1[4] = {0x00, 0x00, 0x00, 0x00}; // CH 1
+const uint8_t ircButtonCh2[4] = {0x00, 0x00, 0x00, 0x00}; // CH 2
+const uint8_t ircButtonCh3[4] = {0x00, 0x00, 0x00, 0x00}; // CH 3
+const uint8_t ircButtonCh4[4] = {0x00, 0x00, 0x00, 0x00}; // CH 4
+const uint8_t ircButtonCh5[4] = {0x00, 0x00, 0x00, 0x00}; // CH 5
+const uint8_t ircButtonCh6[4] = {0x00, 0x00, 0x00, 0x00}; // CH 6
+const uint8_t ircButtonCh7[4] = {0x00, 0x00, 0x00, 0x00}; // CH 7
+const uint8_t ircButtonCh8[4] = {0x00, 0x00, 0x00, 0x00}; // CH 8
+const uint8_t ircButtonCh9[4] = {0x00, 0x00, 0x00, 0x00}; // CH 9
+const uint8_t ircButtonCh0[4] = {0x00, 0x00, 0x00, 0x00}; // CH 0

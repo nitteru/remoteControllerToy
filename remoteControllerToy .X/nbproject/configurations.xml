@@ -17,6 +17,7 @@
       <itemPath>include/ccp1.h</itemPath>
       <itemPath>include/ccp2.h</itemPath>
       <itemPath>include/DFR0299.h</itemPath>
+      <itemPath>include/irc.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -37,6 +38,7 @@
       <itemPath>src/ccp1.c</itemPath>
       <itemPath>src/ccp2.c</itemPath>
       <itemPath>src/DFR0299.c</itemPath>
+      <itemPath>src/irc.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
